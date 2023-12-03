@@ -1,0 +1,19 @@
+@import 'ng-devui/styles-var/devui-var.scss';
+
+.da-abnormal {
+  padding-top: 3em;
+
+  .da-abnormal-title {
+    padding-top: 3em;
+    font-size: 2em;
+  }
+
+  .da-abnormal-description {
+    font-size: 1.1em;
+    padding: 0.5em 0;
+  }
+
+  .da-abnormal-button {
+    padding-top: 1em;
+  }
+}

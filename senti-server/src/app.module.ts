@@ -25,7 +25,7 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule,
     BaseModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
     { provide: APP_GUARD, useClass: RolesGuard },
