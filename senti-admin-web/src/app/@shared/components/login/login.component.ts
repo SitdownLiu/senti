@@ -33,10 +33,10 @@ export class LoginComponent implements OnInit {
   i18nValues: any;
 
   formData = {
-    userAccount: 'Admin',
-    userAccountPassword: '******',
-    userEmail: 'admin@devui.com',
-    userEmailPassword: '******',
+    userAccount: '',
+    userAccountPassword: '',
+    userEmail: '',
+    userEmailPassword: '',
   };
 
   formRules: { [key: string]: DValidateRules } = {
@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit {
   onClick(tabId: string | number) {
     switch (tabId) {
       case 'tab1':
-        this.authService.login(this.formData.userAccount, this.formData.userAccountPassword)
+        this.authService.login(this.formData.userAccount, this.formData.userAccountPassword);
         // .subscribe({
         //   next: (res) => {
         //     this.authService.setSession(res, res.accessToken);

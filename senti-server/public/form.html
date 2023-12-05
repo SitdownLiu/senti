@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test-form</title>
+  </head>
+  <body>
+    <input type="text" name="username" id="username" value="张三" />
+    <input type="text" name="gender" id="gender" value="男" />
+    <input type="text" name="age" id="age" value="13" />
+    <input type="button" id="submit" value="提交" />
+  </body>
+  <script src="./src/camunda-bpm-sdk.js"></script>
+  <script src="./src/jquery3.5.1.min.js"></script>
+  <script>
+    //获取url中的参数
+    function getUrlParam(name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)'); //构造一个含有目标参数的正则表达式对象
+      var r = window.location.search.substr(1).match(reg); //匹配目标参数
+      if (r != null) return unescape(r[2]);
+      return null; //返回参数值
+    }
+
+    window.onload = () => {
+      const camClient = new CamSDK.Client({
+        mock: false,
+        apiUri: 'http://192.168.31.171:8080/engine-rest',
+      });
+      const taskService = new camClient.resource('task');
+
+      const taskId = getUrlParam('taskId'),
+        callbackUrl = getUrlParam('callbackUrl');
+
+      taskService.get(taskId, null).then((res) => {
+        console.log(res);
+      });
+
+      let nextUrl = '';
+      taskService.getTaskVariables(taskId, null).then((res) => {
+        console.log('getTaskVariables:', res);
+        nextUrl = res.nexturl.value;
+      });
+
+      // 提交
+      $('#submit').click((e) => {
+        const formData = {
+          username: { type: 'String', value: username.value, valueInfo: {} },
+          gender: { type: 'String', value: gender.value, valueInfo: {} },
+          age: { type: 'String', value: age.value, valueInfo: {} },
+        };
+        const params = {
+          id: taskId,
+          variables: formData,
+        };
+
+        console.log('params:', params);
+        taskService
+          .complete(params, null)
+          .then((res) => {
+            console.log('response: ', res);
+            // window.location.replace(callbackUrl);
+            // window.location.replace(
+            //   'https://www.tianyancha.com/search?key=%E9%87%8D%E5%BA%86%E7%A7%8B%E5%AE%89%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&sessionNo=1701655938.15772771',
+            // );
+            console.log(nextUrl);
+            debugger;
+            window.location.replace(nextUrl);
+          })
+          .catch((err) => {
+            console.log('err:', err);
+          });
+
+        console.log(formData);
+      });
+    };
+  </script>
+</html>

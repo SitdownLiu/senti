@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { dbConfig } from './config/db.config';
 import { BaseModule } from './modules/base/base.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { SchemasModule } from './modules/schemas/schemas.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     AuthModule,
     BaseModule,
+    SchemasModule,
   ],
   controllers: [],
   providers: [
