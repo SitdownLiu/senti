@@ -4,5 +4,9 @@ export default {
       title: 'Getting Started',
       sample: 'Sample Page',
     },
+    schemas: {
+      title: 'Schema Manager',
+      formSchema: 'Form Schema',
+    },
   },
 };

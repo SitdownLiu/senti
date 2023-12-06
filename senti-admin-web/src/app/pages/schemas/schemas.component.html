@@ -1,0 +1,20 @@
+<div class="">
+  <da-layout-row [daGutter]="[36, 24]">
+    <da-col-item [daSpan]="24" [daXs]="24">
+      <div class="">
+        <d-breadcrumb>
+          <d-breadcrumb-item>
+            <a routerLink="/">
+              {{ 'startUsing.breadcrumb.home' | translate }}
+            </a>
+          </d-breadcrumb-item>
+          <d-breadcrumb-item> {{ 'startUsing.breadcrumb.schemas' | translate }} </d-breadcrumb-item>
+          <d-breadcrumb-item>
+            <b> {{ breadcrumbName | translate }} </b>
+          </d-breadcrumb-item>
+        </d-breadcrumb>
+      </div>
+    </da-col-item>
+  </da-layout-row>
+  <router-outlet></router-outlet>
+</div>

@@ -120,6 +120,9 @@ const PIPES = [NullValueStringPipe];
     SideMenuComponent,
     ...DEVUI_MODULES,
     ...COMPONENTS,
+    ForbiddenComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
   ],
 })
 export class SharedModule {

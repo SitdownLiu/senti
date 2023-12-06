@@ -10,7 +10,7 @@ import { DaLayoutConfig, DaLayoutService } from '../@shared/layouts/da-layout';
 import { DaScreenMediaQueryService } from '../@shared/layouts/da-grid';
 import { SideMenuComponent } from '../@shared/components/side-menu/side-menu.component';
 import { Theme } from 'ng-devui/theme';
-
+import { INIT_MENUS } from 'src/config/menu-config';
 
 @Component({
   selector: 'da-pages',
@@ -73,16 +73,12 @@ export class PagesComponent implements OnInit {
         this.updateMenu(res);
       });
 
-    this.translate.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: TranslationChangeEvent) => {
-        const values = this.translate.instant('page');
-        this.updateMenu(values);
-      });
+    this.translate.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((event: TranslationChangeEvent) => {
+      const values = this.translate.instant('page');
+      this.updateMenu(values);
+    });
     this.personalizeService.getUiTheme()!.subscribe((theme) => {
-      const currentTheme = Object.values(
-        (window as { [key: string]: any })['devuiThemes']
-      ).find((i: Theme | unknown) => {
+      const currentTheme = Object.values((window as { [key: string]: any })['devuiThemes']).find((i: Theme | unknown) => {
         return (i as Theme).id === theme;
       });
       if (currentTheme && (<any>currentTheme).isDark) {
@@ -90,24 +86,11 @@ export class PagesComponent implements OnInit {
       } else {
         this.render2.removeClass(document.body, 'is-dark');
       }
-    })
+    });
   }
 
   updateMenu(values: any) {
-    this.menu = [
-      {
-        title: values['gettingStarted']['title'],
-        open: true,
-        children: [
-          {
-            title: values['gettingStarted']['sample'],
-            link: '/pages/getting-started/sample',
-          },
-        ],
-        link: '/pages/getting-started',
-        menuIcon: 'icon icon-console',
-      },
-    ];
+    this.menu = INIT_MENUS(values);
   }
 
   openSideMenuDrawer() {
@@ -139,9 +122,7 @@ export class PagesComponent implements OnInit {
     this.isSidebarShrink = isShrink;
 
     if (this.layoutConfig.sidebar.firSidebar) {
-      this.layoutConfig.sidebar.firSidebar.width = this.isSidebarShrink
-        ? 54
-        : 240;
+      this.layoutConfig.sidebar.firSidebar.width = this.isSidebarShrink ? 54 : 240;
     }
     this.layoutConfig.sidebar['shrink'] = this.isSidebarShrink;
     this.layoutService.updateLayoutConfig(this.layoutConfig);

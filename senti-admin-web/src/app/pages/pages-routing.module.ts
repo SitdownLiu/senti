@@ -10,26 +10,27 @@ const routes: Routes = [
     children: [
       {
         path: 'getting-started',
-        loadChildren: () =>
-          import('./getting-started/getting-started.module').then(
-            (m) => m.GettingStartedModule
-          )
+        loadChildren: () => import('./getting-started/getting-started.module').then((m) => m.GettingStartedModule),
+      },
+      {
+        path: 'schemas',
+        loadChildren: () => import('./schemas/schemas.module').then((m) => m.SchemasModule),
       },
       {
         path: '',
         redirectTo: 'getting-started',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: '**',
-        redirectTo: 'getting-started'
-      }
-    ]
-  }
+        redirectTo: 'getting-started',
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class PagesRoutingModule {}
