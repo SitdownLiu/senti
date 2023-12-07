@@ -34,4 +34,14 @@ export class FormSchemaService {
   save(data) {
     return this.httpService.post('/schemas/formSchema', data);
   }
+
+  // 修改列表数据
+  patchList(id, data) {
+    return this.httpService.patch('/schemas/formSchema/list', id, data);
+  }
+
+  // 删除列表数据
+  deleteList(id) {
+    return this.httpService.delete('/schemas/formSchema', id);
+  }
 }

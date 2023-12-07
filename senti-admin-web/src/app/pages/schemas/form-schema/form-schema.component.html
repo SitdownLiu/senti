@@ -150,21 +150,15 @@
                     </div>
                   </td>
                   <!-- 配置 -->
-                  <td>
-                    <d-button
-                      icon="icon-delete"
-                      bsStyle="text-dark"
-                      title="delete"
-                      (click)="deleteRow(rowIndex)"
-                    ></d-button>
-                  </td>
+                  <td></td>
                   <!-- 操作 -->
                   <td>
                     <d-button
                       icon="icon-delete"
-                      bsStyle="text-dark"
-                      title="delete"
-                      (click)="deleteRow(rowIndex)"
+                      bsStyle="text"
+                      bsSize="lg"
+                      title="删除"
+                      (click)="deleteRow(rowItem, rowIndex)"
                     ></d-button>
                   </td>
                 </tr>

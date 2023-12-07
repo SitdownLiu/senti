@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, EditableTip, FormLayout, LoadingType, TableWidthConfig } from 'ng-devui';
-import { Subscription } from 'rxjs';
+import { DialogService, EditableTip, FormLayout, LoadingType, TableWidthConfig, ToastService } from 'ng-devui';
 import { FormConfig } from 'src/app/@shared/components/admin-form';
-import { ListDataService } from './list-data.service';
 import { FormSchemaService } from './form-schema.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -107,7 +105,7 @@ export class FormSchemaComponent implements OnInit {
   ];
 
   constructor(
-    private listDataService: ListDataService,
+    private toastService: ToastService,
     private dialogService: DialogService,
     private formSchemaService: FormSchemaService,
     private translateService: TranslateService
@@ -129,57 +127,53 @@ export class FormSchemaComponent implements OnInit {
     });
   }
 
-  onEditEnd(rowItem, field) {
-    rowItem[field] = false;
-  }
-
+  // 查询列表数据
   getList() {
-    // this.busy = this.listDataService.getListData(this.pager).subscribe((res) => {
-    //   console.log(res);
-    //   const data = JSON.parse(JSON.stringify(res.pageList));
-    //   data.$expandConfig = { expand: false };
-    //   this.listData = data;
-    //   this.pager.total = res.total;
-    // });
     this.busy = this.formSchemaService.getList(this.pager).then((res) => {
-      console.log(res);
       res.list.$expandConfig = { expand: false };
       this.listData = res.list;
       this.pager.total = res.total;
     });
   }
 
+  // 激活编辑框
   beforeEditStart = (rowItem, field) => {
-    console.log(rowItem, field);
     return true;
   };
 
+  // 提交编辑结果
   beforeEditEnd = (rowItem, field) => {
+    const params = {};
+    const { id } = rowItem;
+    params[field] = rowItem[field];
     console.log('beforeEditEnd', rowItem, field);
-    if (rowItem && rowItem[field].length < 3) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.formSchemaService.patchList(id, params).then((res) => {
+      if (res) {
+        const index = this.listData.findIndex((v) => v.id === id);
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '修改成功', content: `您修改了第 ${index + 1} 行数据。` }],
+          life: 8000,
+        });
+        return true;
+      } else false;
+    });
   };
 
+  // 展开‘新增’表单
   newRow() {
     this.headerNewForm = true;
   }
 
-  getuuid() {
-    return new Date().getTime() + 'CNWO';
-  }
-
   // 新增一条数据
   quickRowAdded(e) {
-    console.log(e);
-    // const newData = { ...e };
-    // this.listData.unshift(newData);
     this.formSchemaService
       .save({ ...e })
       .then((res) => {
-        console.log(res);
+        this.toastService.open({
+          value: [{ severity: 'success', summary: '添加成功', content: `已经添加了一条表单模型数据。` }],
+          life: 8000,
+        });
+        this.getList();
       })
       .finally(() => {
         this.headerNewForm = false;
@@ -189,12 +183,6 @@ export class FormSchemaComponent implements OnInit {
   // 关闭新增表单
   quickRowCancel() {
     this.headerNewForm = false;
-  }
-
-  subRowAdded(index, item) {
-    this.listData[index].$expandConfig.expand = false;
-    const newData = { ...this.formData };
-    this.listData.splice(index + 1, 0, newData);
   }
 
   subRowCancel(index) {
@@ -217,30 +205,39 @@ export class FormSchemaComponent implements OnInit {
     this.getList();
   }
 
-  deleteRow(index) {
+  deleteRow(item, index) {
     const results = this.dialogService.open({
-      id: 'delete-dialog',
       width: '346px',
       maxHeight: '600px',
-      title: 'Delete',
+      placement: 'top',
+      // offsetY: '300px',
+      title: '操作确认',
+      content: `删除数据后不可恢复，确定要删除列表中第 ${index + 1} 行数据吗？`,
       showAnimate: false,
-      content: 'Are you sure you want to delete it?',
       backdropCloseable: true,
       onClose: () => {},
       buttons: [
         {
           cssClass: 'primary',
-          text: 'Ok',
+          text: '确定',
           disabled: false,
           handler: () => {
-            this.listData.splice(index, 1);
-            results.modalInstance.hide();
+            this.formSchemaService
+              .deleteList(item.id)
+              .then((res) => {
+                this.toastService.open({
+                  value: [{ severity: 'success', summary: '删除成功', content: `已经删除了一条表单模型数据。` }],
+                  life: 8000,
+                });
+                this.getList();
+              })
+              .finally(() => results.modalInstance.hide());
           },
         },
         {
           id: 'btn-cancel',
           cssClass: 'common',
-          text: 'Cancel',
+          text: '取消',
           handler: () => {
             results.modalInstance.hide();
           },

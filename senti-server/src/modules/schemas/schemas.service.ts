@@ -65,7 +65,7 @@ export class SchemasService {
   // 查询表单模型详情
   async queryFormSchema(id): Promise<any> {
     try {
-      return this.formSchema.findOne(id);
+      return this.formSchema.findOne({ where: { id } });
     } catch (error) {
       throw new NotFoundException(`不存在的id: ${id}`);
     }
@@ -74,7 +74,7 @@ export class SchemasService {
   // 删除
   async deleteFormSchema(id): Promise<any> {
     try {
-      let ret = await this.formSchema.findOne(id);
+      let ret = await this.formSchema.findOne({ where: { id } });
       ret.deleteAt = new Date();
       this.formSchema.save(ret);
 
@@ -87,11 +87,12 @@ export class SchemasService {
   // 修改局部数据
   async patchFormSchema(id, dto): Promise<any> {
     try {
-      let ret = await this.formSchema.findOne(id);
-      ret = Object.assign(ret, dto);
+      let ret = await this.formSchema.findOne({ where: { id } });
+      ret = await Object.assign(ret, dto);
       this.formSchema.save(ret);
       return id;
     } catch (error) {
+      console.log(error);
       throw new NotFoundException(`不存在的id: ${id}`);
     }
   }
