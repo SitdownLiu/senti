@@ -34,7 +34,7 @@ export class AuthService {
           if (res && res.statusCode === 200) {
             const { user, accessToken } = res.data;
             this.setSession(user, accessToken);
-            this.router.navigate(['/']);
+            this.router.navigate(['/pages/schemas/form-schema']);
           }
         },
         error: (err) => {

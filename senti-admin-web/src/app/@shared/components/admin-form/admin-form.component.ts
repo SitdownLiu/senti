@@ -11,6 +11,7 @@ export class AdminFormComponent implements OnInit {
   @Input() formConfig: FormConfig = {
     layout: FormLayout.Horizontal,
     labelSize: 'sm',
+    labelAlign: 'start',
     items: [],
   };
 

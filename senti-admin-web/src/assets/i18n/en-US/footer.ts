@@ -1,5 +1,5 @@
 export default {
   footer: {
-    presented: 'DevUI Design Presented'
-  }
+    presented: 'Senti Business System Basic Services',
+  },
 };

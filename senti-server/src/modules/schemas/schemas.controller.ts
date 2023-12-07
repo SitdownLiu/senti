@@ -23,7 +23,7 @@ export class SchemasController {
   @ApiOperation({ summary: '分页查询表单模型列表' })
   @ApiResponse({ status: 200, type: PageFormSchemaRes })
   @Roles('admin')
-  @Get('/formSchema')
+  @Get('/formSchema/page')
   pageFormSchema(@Query() query: PageFormSchemaDto) {
     return this.schemasService.pageFormSchema(query);
   }
@@ -31,7 +31,7 @@ export class SchemasController {
   @ApiOperation({ summary: '查询表单模型详情' })
   @ApiResponse({ status: 200, type: FormSchemaInfoDto })
   @Roles('admin')
-  @Get('/formSchema/:id')
+  @Get('/formSchema/detail/:id')
   queryFormSchema(@Param() param: FormSchemaIdDto) {
     return this.schemasService.queryFormSchema(param.id);
   }

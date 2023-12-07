@@ -6,6 +6,7 @@ import footer from './en-US/footer';
 import header from './en-US/header';
 import login from './en-US/login';
 import register from './en-US/register';
+import components from './en-US/components';
 
 export default {
   ...pages,
@@ -16,4 +17,5 @@ export default {
   ...header,
   ...login,
   ...register,
+  ...components,
 };

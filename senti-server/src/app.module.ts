@@ -19,8 +19,7 @@ import { SchemasModule } from './modules/schemas/schemas.module';
       load: [dbConfig],
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) =>
-        configService.get<TypeOrmModuleOptions>('db'),
+      useFactory: (configService: ConfigService) => configService.get<TypeOrmModuleOptions>('db'),
       inject: [ConfigService],
     }),
     AuthModule,
@@ -36,6 +35,6 @@ import { SchemasModule } from './modules/schemas/schemas.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes('base');
+    consumer.apply(JwtMiddleware).forRoutes('base', 'schemas');
   }
 }

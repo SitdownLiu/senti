@@ -2,12 +2,7 @@ import { isEmpty } from 'class-validator';
 import { jwtConfig } from './../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Request, Response } from 'express';
-import {
-  Injectable,
-  NestMiddleware,
-  NotAcceptableException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware, NotAcceptableException, UnauthorizedException } from '@nestjs/common';
 
 interface Req extends Request {
   user: {};

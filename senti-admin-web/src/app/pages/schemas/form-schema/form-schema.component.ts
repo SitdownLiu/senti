@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, EditableTip, FormLayout, TableWidthConfig } from 'ng-devui';
+import { DialogService, EditableTip, FormLayout, LoadingType, TableWidthConfig } from 'ng-devui';
 import { Subscription } from 'rxjs';
 import { FormConfig } from 'src/app/@shared/components/admin-form';
 import { ListDataService } from './list-data.service';
+import { FormSchemaService } from './form-schema.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'da-form-schema',
@@ -12,28 +14,31 @@ import { ListDataService } from './list-data.service';
 export class FormSchemaComponent implements OnInit {
   editableTip = EditableTip.btn;
   nameEditing: boolean;
-  busy: Subscription;
+  busy: LoadingType;
   pager = {
     total: 0,
     pageIndex: 1,
     pageSize: 10,
   };
-
   listData = [];
-
   headerNewForm = false;
+
+  formTypeOptions = [];
+
+  // 下拉选项
+  options = {
+    formType: this.formSchemaService.loadFormTypeOptions(),
+    formEngineType: [],
+  };
 
   formConfig: FormConfig = {
     layout: FormLayout.Horizontal,
+    labelSize: 'sm',
+    labelAlign: 'end',
     items: [
       {
-        label: 'Id',
-        prop: 'id',
-        type: 'input',
-      },
-      {
-        label: 'Title',
-        prop: 'title',
+        label: 'name',
+        prop: 'name',
         type: 'input',
         required: true,
         rule: {
@@ -41,98 +46,87 @@ export class FormSchemaComponent implements OnInit {
         },
       },
       {
-        label: 'Priority',
-        prop: 'priority',
+        label: 'type',
+        prop: 'type',
         type: 'select',
-        options: ['Low', 'Medium', 'High'],
+        filterKey: 'name',
+        valueKey: 'value',
+        options: this.options.formType,
         required: true,
         rule: {
           validators: [{ required: true }],
         },
       },
       {
-        label: 'Iteration',
-        prop: 'iteration',
+        label: 'remark',
+        prop: 'remark',
         type: 'input',
-      },
-      {
-        label: 'Assignee',
-        prop: 'assignee',
-        type: 'input',
-        required: true,
-        rule: {
-          validators: [{ required: true }],
-        },
-      },
-      {
-        label: 'Status',
-        prop: 'status',
-        type: 'select',
-        options: ['Stuck', 'Done', 'Working on it'],
-      },
-      {
-        label: 'Timeline',
-        prop: 'timeline',
-        type: 'datePicker',
       },
     ],
-    labelSize: ''
   };
 
-  defaultRowData = {
-    id: '',
-    title: '',
-    priority: 'Low',
-    iteration: '',
-    assignee: '',
-    status: 'Stuck',
-    timeline: new Date(),
+  formData = {
+    name: '',
+    type: '',
+    remark: '',
   };
-
-  priorities = ['Low', 'Medium', 'High'];
 
   tableWidthConfig: TableWidthConfig[] = [
     {
       field: 'id',
-      width: '150px',
+      width: '180px',
     },
     {
-      field: 'title',
-      width: '200px',
+      field: 'name',
+      width: '160px',
     },
     {
-      field: 'priority',
+      field: 'type',
+      width: '120px',
+    },
+    {
+      field: 'formEngineType',
+      width: '120px',
+    },
+    {
+      field: 'formUrl',
+      width: '120px',
+    },
+    {
+      field: 'remark',
       width: '100px',
     },
     {
-      field: 'iteration',
-      width: '100px',
+      field: 'actions',
+      width: '160px',
     },
     {
-      field: 'assignee',
-      width: '100px',
-    },
-    {
-      field: 'status',
-      width: '100px',
-    },
-    {
-      field: 'timeline',
-      width: '100px',
-    },
-    {
-      field: 'operator',
-      width: '100px',
+      field: 'operate',
+      width: '80px',
     },
   ];
 
   constructor(
     private listDataService: ListDataService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private formSchemaService: FormSchemaService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
+    this.getTranslate();
     this.getList();
+  }
+
+  // 国际化
+  getTranslate() {
+    this.translateService.get('page').subscribe((res) => {
+      this.formConfig.items.forEach((item) => {
+        if (res['formSchema']['columns'][item.label]) {
+          item.label = res['formSchema']['columns'][item.label];
+        }
+      });
+    });
   }
 
   onEditEnd(rowItem, field) {
@@ -140,14 +134,19 @@ export class FormSchemaComponent implements OnInit {
   }
 
   getList() {
-    this.busy = this.listDataService
-      .getListData(this.pager)
-      .subscribe((res) => {
-        const data = JSON.parse(JSON.stringify(res.pageList));
-        data.$expandConfig = { expand: false };
-        this.listData = data;
-        this.pager.total = res.total;
-      });
+    // this.busy = this.listDataService.getListData(this.pager).subscribe((res) => {
+    //   console.log(res);
+    //   const data = JSON.parse(JSON.stringify(res.pageList));
+    //   data.$expandConfig = { expand: false };
+    //   this.listData = data;
+    //   this.pager.total = res.total;
+    // });
+    this.busy = this.formSchemaService.getList(this.pager).then((res) => {
+      console.log(res);
+      res.list.$expandConfig = { expand: false };
+      this.listData = res.list;
+      this.pager.total = res.total;
+    });
   }
 
   beforeEditStart = (rowItem, field) => {
@@ -171,19 +170,29 @@ export class FormSchemaComponent implements OnInit {
     return new Date().getTime() + 'CNWO';
   }
 
+  // 新增一条数据
   quickRowAdded(e) {
-    const newData = { ...e };
-    this.listData.unshift(newData);
-    this.headerNewForm = false;
+    console.log(e);
+    // const newData = { ...e };
+    // this.listData.unshift(newData);
+    this.formSchemaService
+      .save({ ...e })
+      .then((res) => {
+        console.log(res);
+      })
+      .finally(() => {
+        this.headerNewForm = false;
+      });
   }
 
+  // 关闭新增表单
   quickRowCancel() {
     this.headerNewForm = false;
   }
 
   subRowAdded(index, item) {
     this.listData[index].$expandConfig.expand = false;
-    const newData = { ...this.defaultRowData };
+    const newData = { ...this.formData };
     this.listData.splice(index + 1, 0, newData);
   }
 
@@ -197,14 +206,14 @@ export class FormSchemaComponent implements OnInit {
     }
   }
 
-  onPageChange (e) {
+  onPageChange(e) {
     this.pager.pageIndex = e;
-    this.getList()
+    this.getList();
   }
 
-  onSizeChange (e) {
+  onSizeChange(e) {
     this.pager.pageSize = e;
-    this.getList()
+    this.getList();
   }
 
   deleteRow(index) {

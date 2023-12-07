@@ -78,9 +78,11 @@ export class PagesComponent implements OnInit {
       this.updateMenu(values);
     });
     this.personalizeService.getUiTheme()!.subscribe((theme) => {
-      const currentTheme = Object.values((window as { [key: string]: any })['devuiThemes']).find((i: Theme | unknown) => {
-        return (i as Theme).id === theme;
-      });
+      const currentTheme = Object.values((window as { [key: string]: any })['devuiThemes']).find(
+        (i: Theme | unknown) => {
+          return (i as Theme).id === theme;
+        }
+      );
       if (currentTheme && (<any>currentTheme).isDark) {
         this.render2.addClass(document.body, 'is-dark');
       } else {

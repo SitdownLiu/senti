@@ -13,9 +13,11 @@ import { ListDataService } from './list-data.service';
 import { SharedModule } from 'src/app/@shared/shared.module';
 import { FormSchemaComponent } from './form-schema.component';
 import { AdminFormModule } from 'src/app/@shared/components/admin-form';
+import { FormSchemaService } from './form-schema.service';
+import { FormSchemaPipe } from './form-schema.pipe';
 
 @NgModule({
-  declarations: [FormSchemaComponent],
+  declarations: [FormSchemaComponent, FormSchemaPipe],
   imports: [
     SharedModule,
     DataTableModule,
@@ -26,9 +28,9 @@ import { AdminFormModule } from 'src/app/@shared/components/admin-form';
     AvatarModule,
     PaginationModule,
     SelectModule,
-    DatepickerModule
+    DatepickerModule,
   ],
   exports: [FormSchemaComponent],
-  providers: [ListDataService],
+  providers: [ListDataService, FormSchemaService],
 })
 export class FormSchemaModule {}

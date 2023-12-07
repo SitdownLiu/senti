@@ -1,4 +1,10 @@
-<form dForm [layout]="formConfig.layout" [labelSize]="formConfig.labelSize" (dSubmit)="submitPlanForm($event)">
+<form
+  dForm
+  [layout]="formConfig.layout"
+  [labelSize]="formConfig.labelSize"
+  [labelAlign]="formConfig.labelAlign"
+  (dSubmit)="submitPlanForm($event)"
+>
   <d-form-item *ngFor="let item of formConfig.items">
     <d-form-label [required]="item.required">{{ item.label }}：</d-form-label>
     <d-form-control [extraInfo]="item.extraInfo">
@@ -13,6 +19,8 @@
       <d-select
         *ngIf="item.type === 'select'"
         [appendToBody]="true"
+        [filterKey]="item.filterKey"
+        [valueKey]="item.valueKey"
         [options]="item.options"
         [name]="item.prop"
         [(ngModel)]="_formData[item.prop]"
@@ -40,8 +48,11 @@
       </div>
     </d-form-control>
   </d-form-item>
+
   <d-form-operation class="da-form-operation">
-    <d-button style="margin-right: 5px" dFormSubmit [dFormSubmitData]="'submit-button'">Confirm</d-button>
-    <d-button bsStyle="common" (click)="cancel()">Cancel</d-button>
+    <d-button style="margin-right: 5px" dFormSubmit [dFormSubmitData]="'submit-button'">
+      {{ 'formAdmin.confirm' | translate }}
+    </d-button>
+    <d-button bsStyle="common" (click)="cancel()">{{ 'formAdmin.cancel' | translate }}</d-button>
   </d-form-operation>
 </form>

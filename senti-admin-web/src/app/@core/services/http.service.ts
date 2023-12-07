@@ -16,26 +16,28 @@ export class HttpService {
   private readonly timeOutBackUrl: string = environment.timeOutBackUrl;
 
   private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json', Authorization: '' }),
+    headers: new HttpHeaders({ 'Content-Type': 'application/json', Authorization: this.token, token: this.token }),
     withCredentials: true,
   };
 
-  constructor(private http: HttpClient, private dialogService: DialogService, private toastService: ToastService) {
-    // this.httpOptions.headers.set('Authorization', this.token);
-  }
+  constructor(private http: HttpClient, private dialogService: DialogService, private toastService: ToastService) {}
 
   private errorStatus = {
-    0: { code: '0', title: '未知异常', content: '无法识别的系统异常,请联系管理员.' },
-    400: { code: '400', title: '请求失败', content: '请求参数错误, 请核对并修改.' },
-    404: { code: '404', title: '请求失败', content: '当前请求的资源不存在, 有可能是路径错误.' },
-    415: { code: '415', title: '请求失败', content: '请求方式错误, 当前请求方式并不是服务器所需要的格式.' },
-    401: { code: '401', title: '非法用户', content: '未登录的用户, 或登录已超时.' },
-    403: { code: '403', title: '无访问权限', content: '用户未通过身份验证, 拒绝访问.' },
-    500: { code: '500', title: '服务端异常', content: '服务端处理失败, 有可能正在维护, 请稍后再试.' },
-    501: { code: '501', title: '服务端异常', content: '服务端不支持当前请求所需要的某个功能, 请稍后再试.' },
-    502: { code: '502', title: '服务端异常', content: '服务端的网关异常, 有可能当前访问人数过多, 请稍后再试.' },
-    503: { code: '503', title: '服务端异常', content: '服务器正在维护中, 请稍后再试.' },
-    504: { code: '504', title: '服务端异常', content: '代理服务器超时, 上游服务器或微服务有可能正在维护, 请稍后再试.' },
+    0: { statusCode: '0', title: '未知异常', content: '无法识别的系统异常,请联系管理员.' },
+    400: { statusCode: '400', title: '请求失败', content: '请求参数错误, 请核对并修改.' },
+    404: { statusCode: '404', title: '请求失败', content: '当前请求的资源不存在, 有可能是路径错误.' },
+    415: { statusCode: '415', title: '请求失败', content: '请求方式错误, 当前请求方式并不是服务器所需要的格式.' },
+    401: { statusCode: '401', title: '非法用户', content: '未登录的用户, 或登录已超时.' },
+    403: { statusCode: '403', title: '无访问权限', content: '用户未通过身份验证, 拒绝访问.' },
+    500: { statusCode: '500', title: '服务端异常', content: '服务端处理失败, 有可能正在维护, 请稍后再试.' },
+    501: { statusCode: '501', title: '服务端异常', content: '服务端不支持当前请求所需要的某个功能, 请稍后再试.' },
+    502: { statusCode: '502', title: '服务端异常', content: '服务端的网关异常, 有可能当前访问人数过多, 请稍后再试.' },
+    503: { statusCode: '503', title: '服务端异常', content: '服务器正在维护中, 请稍后再试.' },
+    504: {
+      statusCode: '504',
+      title: '服务端异常',
+      content: '代理服务器超时, 上游服务器或微服务有可能正在维护, 请稍后再试.',
+    },
   };
 
   /**
@@ -46,7 +48,7 @@ export class HttpService {
   public errorMessage(operation: string, error: any) {
     let type: string = 'info',
       dialogtype: string = 'info';
-    const { status, statusText, msg } = error;
+    let { status, statusText, message } = error;
 
     // 401: 跳转到 "超时回调地址"
     if (status === 401) {
@@ -62,7 +64,7 @@ export class HttpService {
             text: '重新登录',
             handler: ($event: Event) => {
               // location.replace(`${this.baseUrl}${this.timeOutBackUrl}`);
-              location.replace(msg);
+              location.replace(message);
             },
           },
         ],
@@ -75,21 +77,27 @@ export class HttpService {
 
     //未知状态码
     if (isEmpty(this.errorStatus[status])) {
-      const message = this.errorStatus[0];
-      const { code, title, content } = message;
+      message = this.errorStatus[0];
+      const { statusCode, title, content } = message;
       return this.toastService.open({
-        value: [{ severity: type, summary: `[${code}] ${title}`, content: `${statusText ? statusText : '系统提示'}: ${msg}\n${content}` }],
+        value: [
+          {
+            severity: type,
+            summary: `[${statusCode}] ${title}`,
+            content: `${statusText ? statusText : '系统提示'}: ${message}\n${content}`,
+          },
+        ],
       });
     }
 
     //post请求
     if (operation === 'post') {
-      const message = this.errorStatus[status];
-      const { code, title, content } = message;
+      message = this.errorStatus[status];
+      const { statusCode, title, content } = message;
       const dialog = this.dialogService.open({
         dialogtype,
-        title: `[${code}] ${title}`,
-        content: `${statusText ? statusText : '系统提示'}: ${msg}\n ${content}`,
+        title: `[${statusCode}] ${title}`,
+        content: `${statusText ? statusText : '系统提示'}: ${message}\n ${content}`,
         width: '400px',
         maxHeight: '600px',
         buttons: [{ cssClass: 'primary', text: '我知道了', handler: ($event: Event) => dialog.modalInstance.hide() }],
@@ -99,10 +107,16 @@ export class HttpService {
     }
 
     //get请求和其他异常
-    const message = this.errorStatus[status];
-    const { code, title, content } = message;
+    message = this.errorStatus[status];
+    const { statusCode, title, content } = message;
     return this.toastService.open({
-      value: [{ severity: type, summary: `[${code}] ${title}`, content: `${statusText ? statusText : '系统提示'}: ${msg}\n${content}` }],
+      value: [
+        {
+          severity: type,
+          summary: `[${statusCode}] ${title}`,
+          content: `${statusText ? statusText : '系统提示'}: ${message}\n${content}`,
+        },
+      ],
     });
   }
 
@@ -136,7 +150,9 @@ export class HttpService {
         }
       }
     }
-    return this.http.get(`${this.baseUrl}${url}`, { ...this.httpOptions, params: httpParams }).pipe(catchError(this.handleError('get')));
+    return this.http
+      .get(`${this.baseUrl}${url}`, { ...this.httpOptions, params: httpParams })
+      .pipe(catchError(this.handleError('get')));
   }
 
   /**
@@ -161,10 +177,10 @@ export class HttpService {
   }
 
   private handleResponse(operation: string, url: string, res: any, resolve: Function, reject?: Function) {
-    const { code, data, msg } = res;
-    if (code !== 200) {
-      console.warn(url, msg);
-      return this.errorMessage(operation, { status: code, msg });
+    const { statusCode, data, message } = res;
+    if (statusCode !== 200) {
+      console.warn(url, message);
+      return this.errorMessage(operation, { status: statusCode, message });
     }
     return resolve(data);
   }
@@ -192,7 +208,7 @@ export class HttpService {
       {
         method: 'POST',
         params,
-        header: { 'Content-Type': 'x-www-form-urlencoded', Authorization: this.token },
+        header: { 'Content-Type': 'x-www-form-urlenstatusCoded', Authorization: this.token, token: this.token },
         withCredentials: true,
       },
       this.handleError('post')

@@ -9,10 +9,6 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
-        path: 'getting-started',
-        loadChildren: () => import('./getting-started/getting-started.module').then((m) => m.GettingStartedModule),
-      },
-      {
         path: 'schemas',
         loadChildren: () => import('./schemas/schemas.module').then((m) => m.SchemasModule),
       },

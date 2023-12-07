@@ -22,15 +22,6 @@ const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: '',
-    redirectTo: 'pages',
-    pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: 'pages',
-  },
-  {
     path: 'forbidden',
     component: ForbiddenComponent,
   },

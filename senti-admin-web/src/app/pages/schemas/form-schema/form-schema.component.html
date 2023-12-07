@@ -6,14 +6,14 @@
           <d-data-table #dataTable [dataSource]="listData" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
             <thead dTableHead>
               <tr dTableRow>
-                <th dHeadCell>Id</th>
-                <th dHeadCell>Title</th>
-                <th dHeadCell>Priority</th>
-                <th dHeadCell>Iteration</th>
-                <th dHeadCell>Assignee</th>
-                <th dHeadCell>Status</th>
-                <th dHeadCell>Timeline</th>
-                <th dHeadCell>Actions</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.id' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.name' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.type' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.formEngineType' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.formUrl' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.remark' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.actions' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.operate' | translate }}</th>
               </tr>
             </thead>
             <tbody dTableBody>
@@ -22,12 +22,14 @@
                   <td dTableCell [attr.colspan]="tableWidthConfig.length">
                     <div *ngIf="!headerNewForm" (click)="newRow()" class="cursor-pointer">
                       <span class="tips-icon icon-add"></span>
-                      <span style="margin-left: 10px">Create new data</span>
+                      <span style="margin-left: 10px">
+                        {{ 'page.formSchema.add' | translate }}
+                      </span>
                     </div>
                     <div *ngIf="headerNewForm" class="edit-padding-fix">
                       <da-admin-form
                         [formConfig]="formConfig"
-                        [formData]="defaultRowData"
+                        [formData]="formData"
                         class="editable-row"
                         (submitted)="quickRowAdded($event)"
                         (canceled)="quickRowCancel()"
@@ -36,131 +38,134 @@
                   </td>
                 </tr>
                 <tr dTableRow>
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['idEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'id'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
-                  >
-                    <span *ngIf="!rowItem['idEdit']">{{ rowItem?.id }}</span>
-                    <div *ngIf="rowItem['idEdit']" class="edit-padding-fix">
-                      <input class="devui-form-control" name="id" [(ngModel)]="rowItem.id" [attr.maxlength]="100" [attr.minlength]="3" />
-                    </div>
+                  <!-- id -->
+                  <td dTableCell [editable]="false" [editableTip]="editableTip" [rowItem]="rowItem" [field]="'id'">
+                    <span>{{ rowItem?.id }}</span>
                   </td>
+                  <!-- 表单名称 -->
                   <td
                     dTableCell
                     [editable]="true"
                     [editableTip]="editableTip"
-                    [(editing)]="rowItem['titleEdit']"
+                    [(editing)]="rowItem['nameEdit']"
                     [rowItem]="rowItem"
-                    [field]="'title'"
+                    [field]="'name'"
                     [beforeEditStart]="beforeEditStart"
                     [beforeEditEnd]="beforeEditEnd"
                   >
-                    <span *ngIf="!rowItem['titleEdit']"><d-tag [tag]="'Epic'" [labelStyle]="'epic'"></d-tag> {{ rowItem?.title }}</span>
-                    <div *ngIf="rowItem['titleEdit']" class="edit-padding-fix">
+                    <span *ngIf="!rowItem['nameEdit']">
+                      {{ rowItem?.name }}
+                    </span>
+                    <div *ngIf="rowItem['nameEdit']" class="edit-padding-fix">
                       <input
                         class="devui-form-control"
-                        name="title"
-                        [(ngModel)]="rowItem.title"
+                        name="name"
+                        [(ngModel)]="rowItem.name"
                         [attr.maxlength]="100"
                         [attr.minlength]="3"
                       />
                     </div>
                   </td>
+                  <!-- 表单类型 -->
                   <td
                     dTableCell
                     [editable]="true"
                     [editableTip]="editableTip"
-                    [(editing)]="rowItem['priorityEdit']"
+                    [(editing)]="rowItem['typeEdit']"
                     [rowItem]="rowItem"
-                    [field]="'priority'"
+                    [field]="'type'"
                     [beforeEditStart]="beforeEditStart"
                     [beforeEditEnd]="beforeEditEnd"
                   >
-                    <span *ngIf="!rowItem['priorityEdit']"><d-tag [tag]="rowItem?.priority" [labelStyle]="rowItem?.priority"></d-tag></span>
-                    <div *ngIf="rowItem['priorityEdit']" class="edit-padding-fix">
-                      <d-select name="priority" [(ngModel)]="rowItem.priority" [options]="priorities"></d-select>
-                    </div>
-                  </td>
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['iterationEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'iteration'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
-                  >
-                    <span *ngIf="!rowItem['iterationEdit']">{{ rowItem?.iteration }}</span>
-                    <div *ngIf="rowItem['iterationEdit']" class="edit-padding-fix">
-                      <input dTextInput size="sm" [(ngModel)]="rowItem.iteration" />
-                    </div>
-                  </td>
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['assigneeEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'assignee'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
-                  >
-                    <span *ngIf="!rowItem['assigneeEdit']">
-                      <d-avatar [name]="rowItem.assignee" [width]="24" [height]="24"></d-avatar>
-                      <span style="margin-left: 6px">{{ rowItem.assignee }}</span>
+                    <span *ngIf="!rowItem['typeEdit']">
+                      <d-tag
+                        [(checked)]="rowItem.type"
+                        [tag]="rowItem?.type | formSchema : 'type'"
+                        [labelStyle]="rowItem?.type === 'FormEngine' ? 'aqua-w98' : 'green-w98'"
+                      ></d-tag>
                     </span>
-                    <div *ngIf="rowItem['assigneeEdit']" class="edit-padding-fix">
-                      <input dTextInput size="sm" [(ngModel)]="rowItem.assignee" />
+                    <div *ngIf="rowItem['typeEdit']" class="edit-padding-fix">
+                      <d-select
+                        [appendToBody]="true"
+                        [filterKey]="'name'"
+                        [valueKey]="'value'"
+                        [options]="options.formType"
+                        [name]="'type'"
+                        [(ngModel)]="rowItem.type"
+                      ></d-select>
                     </div>
                   </td>
+                  <!-- 表单引擎类型 -->
                   <td
                     dTableCell
                     [editable]="true"
                     [editableTip]="editableTip"
-                    [(editing)]="rowItem['statusEdit']"
+                    [(editing)]="rowItem['formEngineTypeEdit']"
                     [rowItem]="rowItem"
-                    [field]="'status'"
+                    [field]="'formEngineType'"
                     [beforeEditStart]="beforeEditStart"
                     [beforeEditEnd]="beforeEditEnd"
                   >
-                    <span *ngIf="!rowItem['statusEdit']"
-                      ><span [ngClass]="rowItem?.status.split(' ')[0]">{{ rowItem?.status || '--' }}</span></span
-                    >
-                    <div *ngIf="rowItem['statusEdit']" class="edit-padding-fix">
-                      <d-select name="status" [(ngModel)]="rowItem.status" [options]="['Stuck', 'Done', 'Working on it']"></d-select>
+                    <span *ngIf="!rowItem['formEngineTypeEdit']">
+                      {{ rowItem.formEngineType | formSchema : 'fromEngineType' }}
+                    </span>
+                    <div *ngIf="rowItem['formEngineTypeEdit']" class="edit-padding-fix">
+                      <input dTextInput size="sm" [(ngModel)]="rowItem.formEngineType" />
                     </div>
                   </td>
-                  <td dTableCell [editable]="true" [(editing)]="rowItem['dateEdit']">
-                    <span *ngIf="!rowItem['dateEdit']">{{ rowItem?.timeline | i18nDate : 'short' : false }}</span>
-                    <form *ngIf="rowItem['dateEdit']" class="form-inline edit-padding-fix">
-                      <div class="devui-form-group">
-                        <div class="devui-input-group devui-dropdown-origin">
-                          <input
-                            class="devui-form-control search"
-                            name="date"
-                            [(ngModel)]="rowItem.timeline"
-                            dDatepicker
-                            appendToBody
-                            #datePicker="datepicker"
-                            [autoOpen]="true"
-                            (ngModelChange)="onEditEnd(rowItem, 'dateEdit')"
-                          />
-                          <div class="devui-input-group-addon" (click)="datePicker.toggle()">
-                            <i class="icon icon-calendar"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
+                  <!-- 表单URL -->
+                  <td
+                    dTableCell
+                    [editable]="true"
+                    [editableTip]="editableTip"
+                    [(editing)]="rowItem['formUrlEdit']"
+                    [rowItem]="rowItem"
+                    [field]="'formUrl'"
+                    [beforeEditStart]="beforeEditStart"
+                    [beforeEditEnd]="beforeEditEnd"
+                  >
+                    <span *ngIf="!rowItem['formUrlEdit']">
+                      {{ rowItem.formUrl }}
+                    </span>
+                    <div *ngIf="rowItem['formUrlEdit']" class="edit-padding-fix">
+                      <input dTextInput size="sm" [(ngModel)]="rowItem.formUrl" />
+                    </div>
                   </td>
+                  <!-- 备注 -->
+                  <td
+                    dTableCell
+                    [editable]="true"
+                    [editableTip]="editableTip"
+                    [(editing)]="rowItem['remarkEdit']"
+                    [rowItem]="rowItem"
+                    [field]="'remark'"
+                    [beforeEditStart]="beforeEditStart"
+                    [beforeEditEnd]="beforeEditEnd"
+                  >
+                    <span *ngIf="!rowItem['remarkEdit']">
+                      {{ rowItem.remark }}
+                    </span>
+                    <div *ngIf="rowItem['remarkEdit']" class="edit-padding-fix">
+                      <input dTextInput size="sm" [(ngModel)]="rowItem.remark" />
+                    </div>
+                  </td>
+                  <!-- 配置 -->
                   <td>
-                    <d-button icon="icon-delete" bsStyle="text-dark" title="delete" (click)="deleteRow(rowIndex)"></d-button>
+                    <d-button
+                      icon="icon-delete"
+                      bsStyle="text-dark"
+                      title="delete"
+                      (click)="deleteRow(rowIndex)"
+                    ></d-button>
+                  </td>
+                  <!-- 操作 -->
+                  <td>
+                    <d-button
+                      icon="icon-delete"
+                      bsStyle="text-dark"
+                      title="delete"
+                      (click)="deleteRow(rowIndex)"
+                    ></d-button>
                   </td>
                 </tr>
               </ng-template>
@@ -176,7 +181,7 @@
             [canViewTotal]="true"
             [canChangePageSize]="true"
             [canJumpPage]="true"
-            [maxItems]="5"
+            [maxItems]="10"
             (pageIndexChange)="onPageChange($event)"
             (pageSizeChange)="onSizeChange($event)"
           >
