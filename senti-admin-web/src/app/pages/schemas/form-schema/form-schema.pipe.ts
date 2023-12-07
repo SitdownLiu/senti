@@ -9,7 +9,6 @@ export class FormSchemaPipe implements PipeTransform {
   constructor(private formSchemaService: FormSchemaService) {}
 
   transform(value: unknown, ...args: unknown[]): unknown {
-    console.log(args);
     if (isEmpty(value)) return '--';
 
     if (args[0] === 'type') return this.formTypeMethod(value);

@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiHeader, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/common/common.decorator';
 import { BaseService } from './base.service';
@@ -17,12 +8,7 @@ import {
   QueryDictionaryTypeDto,
   ResDicTypeDto,
 } from './dtos/dictionary-type.dto';
-import {
-  AddOrUpdateDictionaryDto,
-  QueryDictionaryDto,
-  DeleteDictionaryDto,
-  ResDicDto,
-} from './dtos/dictionary.dto';
+import { AddOrUpdateDictionaryDto, QueryDictionaryDto, DeleteDictionaryDto, ResDicDto } from './dtos/dictionary.dto';
 import { AddOrUpdateRoleDto, DeleteRoleDto, ResRoleDto } from './dtos/role.dto';
 
 @ApiTags('基础服务')
@@ -98,7 +84,7 @@ export class BaseController {
 
   @ApiOperation({ summary: '删除角色' })
   @Roles('admin')
-  @Get('/role/:id')
+  @Delete('/role/:id')
   deleteRole(@Param() params: DeleteRoleDto) {
     return this.baseService.deleteRole(params.id);
   }

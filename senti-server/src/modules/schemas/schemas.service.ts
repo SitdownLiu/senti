@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FormSchema } from './entities/form-schema.entity';
 import { Like, Repository } from 'typeorm';
@@ -40,7 +36,17 @@ export class SchemasService {
       skip = (pageNum - 1) * take || 0;
 
     const qb = this.formSchema
-      .createQueryBuilder()
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.type',
+        'user.formEngineType',
+        'user.formUrl',
+        'user.remark',
+        'user.create_at',
+        'user.update_at',
+      ])
       .orderBy('update_at', 'DESC');
 
     if (name) qb.where({ name: Like(`%${name}%`) });
@@ -72,6 +78,18 @@ export class SchemasService {
       ret.deleteAt = new Date();
       this.formSchema.save(ret);
 
+      return id;
+    } catch (error) {
+      throw new NotFoundException(`不存在的id: ${id}`);
+    }
+  }
+
+  // 修改局部数据
+  async patchFormSchema(id, dto): Promise<any> {
+    try {
+      let ret = await this.formSchema.findOne(id);
+      ret = Object.assign(ret, dto);
+      this.formSchema.save(ret);
       return id;
     } catch (error) {
       throw new NotFoundException(`不存在的id: ${id}`);

@@ -150,11 +150,12 @@ export class FormSchemaComponent implements OnInit {
   }
 
   beforeEditStart = (rowItem, field) => {
+    console.log(rowItem, field);
     return true;
   };
 
   beforeEditEnd = (rowItem, field) => {
-    console.log('beforeEditEnd');
+    console.log('beforeEditEnd', rowItem, field);
     if (rowItem && rowItem[field].length < 3) {
       return false;
     } else {

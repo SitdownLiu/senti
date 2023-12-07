@@ -83,3 +83,31 @@ export class FormSchemaIdDto {
   @IsNotEmpty({ message: '[表单模型主键id]必填' })
   id: string;
 }
+
+// 表单模型 -修改表单模型列表数据参数
+export class PatchFormSchemaListDto {
+  @ApiProperty({ required: false, description: '表单名称' })
+  name: string;
+
+  @ApiProperty({
+    required: false,
+    enum: FormTypeEnum,
+    description: '表单类型：表单引擎，用户自定义',
+  })
+  type: string;
+
+  @ApiProperty({
+    required: false,
+    description: '表单引擎类型（表单类型为[FormEngine]）',
+  })
+  formEngineType: string;
+
+  @ApiProperty({
+    required: false,
+    description: '表单Url地址（表单类型为[FormUrl]）',
+  })
+  formUrl: string;
+
+  @ApiProperty({ required: false, description: '备注' })
+  remark: string;
+}
