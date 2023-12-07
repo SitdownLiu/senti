@@ -90,8 +90,8 @@ export class HttpService {
       });
     }
 
-    //post请求
-    if (operation === 'post') {
+    // post|delete|patch请求异常处理
+    if (['post', 'delete', 'patch'].includes(operation)) {
       message = this.errorStatus[status];
       const { statusCode, title, content } = message;
       const dialog = this.dialogService.open({
@@ -176,6 +176,49 @@ export class HttpService {
       .pipe(catchError(this.handleError('post')));
   }
 
+  /**
+   * TODO: delete请求
+   * @param url
+   * @param id
+   * @param params
+   * @returns {Observable}
+   */
+  private deleteMethod(url: string, id: string, params?: object): Observable<{}> {
+    let httpParams = new HttpParams();
+    if (!isEmpty(params)) {
+      for (const key in params) {
+        if (params[key] === false || params[key]) {
+          httpParams = httpParams.set(key, params[key]);
+        }
+      }
+    }
+    return this.http
+      .delete(`${this.baseUrl}${url}/${id}`, { ...this.httpOptions, params: httpParams })
+      .pipe(catchError(this.handleError('delete')));
+  }
+
+  /**
+   * TODO: patch请求
+   * @param url
+   * @param id
+   * @param body
+   * @param params
+   * @returns {Observable}
+   */
+  private patchMethod(url: string, id: string, body: any = null, params?: Object): Observable<{}> {
+    let httpParams = new HttpParams();
+    if (!isEmpty(params)) {
+      for (const key in params) {
+        if (params[key] === false || params[key]) {
+          httpParams = httpParams.set(key, params[key]);
+        }
+      }
+    }
+    return this.http
+      .patch(`${this.baseUrl}${url}/${id}`, body, { ...this.httpOptions, params: httpParams })
+      .pipe(catchError(this.handleError('patch')));
+  }
+
   private handleResponse(operation: string, url: string, res: any, resolve: Function, reject?: Function) {
     const { statusCode, data, message } = res;
     if (statusCode !== 200) {
@@ -197,6 +240,22 @@ export class HttpService {
     return new Promise((resolve, reject) => {
       this.postMethod(url, body, params).subscribe((res: any) => {
         return this.handleResponse('post', url, res, resolve);
+      });
+    });
+  }
+
+  public async delete(url: string, id: string, params?: object): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.deleteMethod(url, id, params).subscribe((res: any) => {
+        return this.handleResponse('delete', `${url}/${id}`, res, resolve);
+      });
+    });
+  }
+
+  public async patch(url: string, id: string, body: any = null, params?: Object): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.patchMethod(url, id, body, params).subscribe((res: any) => {
+        return this.handleResponse('patch', `${url}/${id}`, res, resolve);
       });
     });
   }
