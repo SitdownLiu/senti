@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "senti-admin-web": {
+    "senti-app-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/senti-admin-web",
+            "outputPath": "dist/senti-app-web",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -31,8 +31,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/ng-devui/devui.min.css",
-              "node_modules/@devui-design/icons/icomoon/devui-icon.css"
+              "node_modules/ng-devui/devui.min.css"
             ],
             "scripts": []
           },
@@ -67,21 +66,21 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "senti-admin-web:build:production"
+              "browserTarget": "senti-app-web:build:production"
             },
             "development": {
-              "browserTarget": "senti-admin-web:build:development"
+              "browserTarget": "senti-app-web:build:development"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 34200
+            "port": 34210
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "senti-admin-web:build"
+            "browserTarget": "senti-app-web:build"
           }
         },
         "test": {
@@ -107,6 +106,6 @@
     }
   },
   "cli": {
-    "analytics": "0f648d77-a3c2-4107-8a2b-089c4f5ec26b"
+    "analytics": "086463da-8cd5-48bc-88c9-cd3f51adc6e4"
   }
 }
