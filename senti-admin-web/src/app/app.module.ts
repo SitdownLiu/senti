@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +13,7 @@ import { I18N } from '../config/language-config';
 
 //`TODO:` token
 export function tokenGetter() {
-  return localStorage.getItem('token');
+  return localStorage.getItem('senti_token');
 }
 
 class I18NLoader implements TranslateLoader {
@@ -23,6 +23,7 @@ class I18NLoader implements TranslateLoader {
 }
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [AppComponent],
   imports: [
     BrowserModule,

@@ -8,7 +8,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
       // 获取请求header token值
-      jwtFromRequest: ExtractJwt.fromHeader('token'),
+      jwtFromRequest: ExtractJwt.fromHeader('senti_token'),
       secretOrKey: jwtConfig.secret,
     });
   }

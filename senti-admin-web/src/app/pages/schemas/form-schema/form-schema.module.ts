@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
   AvatarModule,
   CardModule,
@@ -15,10 +15,14 @@ import { FormSchemaComponent } from './form-schema.component';
 import { AdminFormModule } from 'src/app/@shared/components/admin-form';
 import { FormSchemaService } from './form-schema.service';
 import { FormSchemaPipe } from './form-schema.pipe';
+import { FormDesignerComponent } from './form-designer/form-designer.component';
+import { FormDesignerModule } from './form-designer/form-designer.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [FormSchemaComponent, FormSchemaPipe],
   imports: [
+    CommonModule,
     SharedModule,
     DataTableModule,
     AdminFormModule,
@@ -29,6 +33,7 @@ import { FormSchemaPipe } from './form-schema.pipe';
     PaginationModule,
     SelectModule,
     DatepickerModule,
+    FormDesignerModule,
   ],
   exports: [FormSchemaComponent],
   providers: [ListDataService, FormSchemaService],

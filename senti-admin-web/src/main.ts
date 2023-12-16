@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ThemeServiceInit, devuiDarkTheme, Theme } from 'ng-devui/theme';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import microApp from '@micro-zoe/micro-app';
 
 import { infinityTheme, sweetTheme, provenceTheme, deepTheme } from 'ng-devui/theme-collection';
 
@@ -30,3 +31,6 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));
+
+// 微前端
+microApp.start({});

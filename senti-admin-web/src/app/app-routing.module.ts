@@ -9,6 +9,11 @@ import { NotFoundComponent } from './@shared/components/abnormal/not-found/not-f
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/pages/schemas/form-schema',
+    pathMatch: 'full',
+  },
+  {
     path: 'pages',
     loadChildren: () => import('./pages/pages.module').then((m) => m.PagesModule),
     canActivate: [AuthGuardService],

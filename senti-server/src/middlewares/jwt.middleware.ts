@@ -13,7 +13,7 @@ export class JwtMiddleware implements NestMiddleware {
   private jwtService = new JwtService({ secret: jwtConfig.secret });
 
   async use(req: Req, res: Response, next: NextFunction) {
-    const { token } = req.headers;
+    const token = req.headers['senti_token'];
     if (isEmpty(token)) throw new UnauthorizedException();
 
     try {

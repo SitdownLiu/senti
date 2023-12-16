@@ -20,9 +20,16 @@ export class FormSchemaService {
     { name: '用户自定义', value: 'FormUrl' },
   ];
 
+  private formEngineTypeOptions = ['vue3-vform3'];
+
   // 加载表单类型
   loadFormTypeOptions() {
     return this.formTypeOptions;
+  }
+
+  // 加载表单引擎类型
+  loadFormEngineTypeOptions() {
+    return this.formEngineTypeOptions;
   }
 
   // 查询列表

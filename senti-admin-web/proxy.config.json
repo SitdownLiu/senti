@@ -3,8 +3,12 @@
     "target": "http://localhost:33000",
     "secure": false,
     "changeOrigin": true,
+    "logLevel": "debug",
     "pathRewrite": {
       "^/api": "/"
+    },
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
     }
   }
 }

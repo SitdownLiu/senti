@@ -3,7 +3,12 @@
     <da-col-item [daSpan]="24" [daXs]="24">
       <div class="da-list-container" dLoading [loading]="busy">
         <div class="da-list-content">
-          <d-data-table #dataTable [dataSource]="listData" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
+          <d-data-table
+            #dataTable
+            [dataSource]="listData"
+            [scrollable]="true"
+            [tableWidthConfig]="tableWidthConfig"
+          >
             <thead dTableHead>
               <tr dTableRow>
                 <th dHeadCell>{{ 'page.formSchema.columns.id' | translate }}</th>
@@ -21,7 +26,7 @@
                 <tr dTableRow *ngIf="rowIndex === 0">
                   <td dTableCell [attr.colspan]="tableWidthConfig.length">
                     <div *ngIf="!headerNewForm" (click)="newRow()" class="cursor-pointer">
-                      <span class="tips-icon icon-add"></span>
+                      <span class="icon icon-add"></span>
                       <span style="margin-left: 10px">
                         {{ 'page.formSchema.add' | translate }}
                       </span>
@@ -39,7 +44,13 @@
                 </tr>
                 <tr dTableRow>
                   <!-- id -->
-                  <td dTableCell [editable]="false" [editableTip]="editableTip" [rowItem]="rowItem" [field]="'id'">
+                  <td
+                    dTableCell
+                    [editable]="false"
+                    [editableTip]="editableTip"
+                    [rowItem]="rowItem"
+                    [field]="'id'"
+                  >
                     <span>{{ rowItem?.id }}</span>
                   </td>
                   <!-- 表单名称 -->
@@ -107,10 +118,19 @@
                     [beforeEditEnd]="beforeEditEnd"
                   >
                     <span *ngIf="!rowItem['formEngineTypeEdit']">
-                      {{ rowItem.formEngineType | formSchema : 'fromEngineType' }}
+                      <d-tag
+                        *ngIf="rowItem.formEngineType"
+                        [(checked)]="rowItem.formEngineType"
+                        [tag]="rowItem?.formEngineType"
+                      ></d-tag>
                     </span>
                     <div *ngIf="rowItem['formEngineTypeEdit']" class="edit-padding-fix">
-                      <input dTextInput size="sm" [(ngModel)]="rowItem.formEngineType" />
+                      <d-select
+                        [appendToBody]="true"
+                        [options]="options.formEngineType"
+                        [name]="'fromEngineType'"
+                        [(ngModel)]="rowItem.formEngineType"
+                      ></d-select>
                     </div>
                   </td>
                   <!-- 表单URL -->
@@ -150,7 +170,16 @@
                     </div>
                   </td>
                   <!-- 配置 -->
-                  <td></td>
+                  <td>
+                    <d-button
+                      bsStyle="text"
+                      icon="icon-feedback2"
+                      bsSize="lg"
+                      (btnClick)="openFormDesignerDrawer(rowItem.id)"
+                    >
+                      设计
+                    </d-button>
+                  </td>
                   <!-- 操作 -->
                   <td>
                     <d-button
@@ -159,7 +188,9 @@
                       bsSize="lg"
                       title="删除"
                       (click)="deleteRow(rowItem, rowIndex)"
-                    ></d-button>
+                    >
+                      删除
+                    </d-button>
                   </td>
                 </tr>
               </ng-template>

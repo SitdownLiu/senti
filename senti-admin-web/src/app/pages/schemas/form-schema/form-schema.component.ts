@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, EditableTip, FormLayout, LoadingType, TableWidthConfig, ToastService } from 'ng-devui';
+import {
+  DialogService,
+  EditableTip,
+  FormLayout,
+  LoadingType,
+  TableWidthConfig,
+  ToastService,
+} from 'ng-devui';
 import { FormConfig } from 'src/app/@shared/components/admin-form';
 import { FormSchemaService } from './form-schema.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DrawerService, IDrawerOpenResult } from 'ng-devui/drawer';
+import { FormDesignerComponent } from './form-designer/form-designer.component';
 
 @Component({
   selector: 'da-form-schema',
@@ -21,14 +30,13 @@ export class FormSchemaComponent implements OnInit {
   listData = [];
   headerNewForm = false;
 
-  formTypeOptions = [];
-
   // 下拉选项
   options = {
     formType: this.formSchemaService.loadFormTypeOptions(),
-    formEngineType: [],
+    formEngineType: this.formSchemaService.loadFormEngineTypeOptions(),
   };
 
+  // “新增”表单
   formConfig: FormConfig = {
     layout: FormLayout.Horizontal,
     labelSize: 'sm',
@@ -62,13 +70,13 @@ export class FormSchemaComponent implements OnInit {
       },
     ],
   };
-
   formData = {
     name: '',
     type: '',
     remark: '',
   };
 
+  // 列表配置
   tableWidthConfig: TableWidthConfig[] = [
     {
       field: 'id',
@@ -104,11 +112,15 @@ export class FormSchemaComponent implements OnInit {
     },
   ];
 
+  // “设计”弹框
+  formDesignerDrawer: IDrawerOpenResult;
+
   constructor(
     private toastService: ToastService,
     private dialogService: DialogService,
     private formSchemaService: FormSchemaService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private drawerService: DrawerService
   ) {}
 
   ngOnInit() {
@@ -226,7 +238,9 @@ export class FormSchemaComponent implements OnInit {
               .deleteList(item.id)
               .then((res) => {
                 this.toastService.open({
-                  value: [{ severity: 'success', summary: '删除成功', content: `已经删除了一条表单模型数据。` }],
+                  value: [
+                    { severity: 'success', summary: '删除成功', content: `已经删除了一条表单模型数据。` },
+                  ],
                   life: 8000,
                 });
                 this.getList();
@@ -245,4 +259,24 @@ export class FormSchemaComponent implements OnInit {
       ],
     });
   }
+
+  // 打开“设计”界面
+  openFormDesignerDrawer = (formId) => {
+    this.formDesignerDrawer = this.drawerService.open({
+      drawerContentComponent: FormDesignerComponent,
+      width: '100vw',
+      zIndex: 1000,
+      isCover: true,
+      fullScreen: true,
+      backdropCloseable: true,
+      escKeyCloseable: true,
+      position: 'right',
+      data: {
+        formId,
+        close: (event) => {
+          this.formDesignerDrawer.drawerInstance.hide();
+        },
+      },
+    });
+  };
 }

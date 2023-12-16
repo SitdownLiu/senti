@@ -12,26 +12,45 @@ import { HelperUtils } from 'ng-devui';
 })
 export class HttpService {
   private readonly baseUrl: string = environment.baseUrl;
-  private readonly token: string = localStorage.getItem('token');
+  private readonly token: string = localStorage.getItem('senti_token');
   private readonly timeOutBackUrl: string = environment.timeOutBackUrl;
 
   private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json', Authorization: this.token, token: this.token }),
+    headers: new HttpHeaders({
+      senti_token: this.token,
+      'Content-Type': 'application/json',
+    }),
     withCredentials: true,
   };
 
-  constructor(private http: HttpClient, private dialogService: DialogService, private toastService: ToastService) {}
+  constructor(
+    private http: HttpClient,
+    private dialogService: DialogService,
+    private toastService: ToastService
+  ) {}
 
   private errorStatus = {
     0: { statusCode: '0', title: '未知异常', content: '无法识别的系统异常,请联系管理员.' },
     400: { statusCode: '400', title: '请求失败', content: '请求参数错误, 请核对并修改.' },
     404: { statusCode: '404', title: '请求失败', content: '当前请求的资源不存在, 有可能是路径错误.' },
-    415: { statusCode: '415', title: '请求失败', content: '请求方式错误, 当前请求方式并不是服务器所需要的格式.' },
+    415: {
+      statusCode: '415',
+      title: '请求失败',
+      content: '请求方式错误, 当前请求方式并不是服务器所需要的格式.',
+    },
     401: { statusCode: '401', title: '非法用户', content: '未登录的用户, 或登录已超时.' },
     403: { statusCode: '403', title: '无访问权限', content: '用户未通过身份验证, 拒绝访问.' },
     500: { statusCode: '500', title: '服务端异常', content: '服务端处理失败, 有可能正在维护, 请稍后再试.' },
-    501: { statusCode: '501', title: '服务端异常', content: '服务端不支持当前请求所需要的某个功能, 请稍后再试.' },
-    502: { statusCode: '502', title: '服务端异常', content: '服务端的网关异常, 有可能当前访问人数过多, 请稍后再试.' },
+    501: {
+      statusCode: '501',
+      title: '服务端异常',
+      content: '服务端不支持当前请求所需要的某个功能, 请稍后再试.',
+    },
+    502: {
+      statusCode: '502',
+      title: '服务端异常',
+      content: '服务端的网关异常, 有可能当前访问人数过多, 请稍后再试.',
+    },
     503: { statusCode: '503', title: '服务端异常', content: '服务器正在维护中, 请稍后再试.' },
     504: {
       statusCode: '504',
@@ -77,6 +96,10 @@ export class HttpService {
 
     //未知状态码
     if (isEmpty(this.errorStatus[status])) {
+      if (operation === 'get') {
+        return location.reload();
+      }
+
       message = this.errorStatus[0];
       const { statusCode, title, content } = message;
       return this.toastService.open({
@@ -100,7 +123,9 @@ export class HttpService {
         content: `${statusText ? statusText : '系统提示'}: ${message}\n ${content}`,
         width: '400px',
         maxHeight: '600px',
-        buttons: [{ cssClass: 'primary', text: '我知道了', handler: ($event: Event) => dialog.modalInstance.hide() }],
+        buttons: [
+          { cssClass: 'primary', text: '我知道了', handler: ($event: Event) => dialog.modalInstance.hide() },
+        ],
       });
 
       return;
@@ -267,7 +292,11 @@ export class HttpService {
       {
         method: 'POST',
         params,
-        header: { 'Content-Type': 'x-www-form-urlenstatusCoded', Authorization: this.token, token: this.token },
+        header: {
+          'Content-Type': 'x-www-form-urlenstatusCoded',
+          Authorization: this.token,
+          token: this.token,
+        },
         withCredentials: true,
       },
       this.handleError('post')

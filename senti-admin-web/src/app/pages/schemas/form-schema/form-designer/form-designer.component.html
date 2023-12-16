@@ -1,0 +1,27 @@
+<d-splitter
+  class="form-designer-drawer"
+  style="height: 100vh"
+  orientation="vertical"
+  [disabledBarSize]="'2px'"
+>
+  <d-splitter-pane size="40px" minSize="40px" [collapsed]="false" [collapsible]="true">
+    <div class="form-designer-drawer-header">
+      <d-button icon="icon-save" bsStyle="primary" [style.marginRight]="'12px'" (click)="save($event)">
+        保存
+      </d-button>
+      <d-button icon="icon-close" bsStyle="common" (click)="close($event)"> 关闭 </d-button>
+    </div>
+  </d-splitter-pane>
+  <d-splitter-pane style="overflow: auto">
+    <div class="form-designer-drawer-content">
+      <micro-app
+        id="senti-app"
+        name="senti-app"
+        url=""
+        default-page="form-design"
+        destroy
+        clear-data
+      ></micro-app>
+    </div>
+  </d-splitter-pane>
+</d-splitter>
