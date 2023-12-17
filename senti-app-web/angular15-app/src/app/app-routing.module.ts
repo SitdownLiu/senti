@@ -4,7 +4,7 @@ import { FormDesignComponent } from './pages/form-design/form-design.component';
 
 const routes: Routes = [
   {
-    path: 'form-design',
+    path: 'formDesigner',
     component: FormDesignComponent,
   },
 ];

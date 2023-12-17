@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "vue3-app"
+		},
+		{
+			"path": "angular15-app"
+		},
+		{
+			"path": "react18-app"
+		}
+	],
+	"settings": {}
+}

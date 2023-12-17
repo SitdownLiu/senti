@@ -6,6 +6,7 @@ import {
   FormSchemaInfoDto,
   PageFormSchemaDto,
   PageFormSchemaRes,
+  PatchFormSchemaConfigDto,
   PatchFormSchemaListDto,
 } from './dtos/form-schema.dto';
 import { Roles } from 'src/common/common.decorator';
@@ -52,6 +53,13 @@ export class SchemasController {
   @Roles('admin')
   @Patch('/formSchema/list/:id')
   patchFormSchemaList(@Param() param: FormSchemaIdDto, @Body() body: PatchFormSchemaListDto) {
+    return this.schemasService.patchFormSchema(param.id, body);
+  }
+
+  @ApiOperation({ summary: '修改表单模型配置' })
+  @Roles('admin')
+  @Patch('/formSchema/config/:id')
+  patchFormSchemaConfig(@Param() param: FormSchemaIdDto, @Body() body: PatchFormSchemaConfigDto) {
     return this.schemasService.patchFormSchema(param.id, body);
   }
 }

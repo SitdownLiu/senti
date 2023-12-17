@@ -6,10 +6,16 @@
 >
   <d-splitter-pane size="40px" minSize="40px" [collapsed]="false" [collapsible]="true">
     <div class="form-designer-drawer-header">
-      <d-button icon="icon-save" bsStyle="primary" [style.marginRight]="'12px'" (click)="save($event)">
+      <d-button
+        icon="icon-save"
+        bsStyle="primary"
+        [style.marginRight]="'12px'"
+        [showLoading]="loadingType"
+        (btnClick)="save()"
+      >
         保存
       </d-button>
-      <d-button icon="icon-close" bsStyle="common" (click)="close($event)"> 关闭 </d-button>
+      <d-button icon="icon-close" bsStyle="common" (btnClick)="close($event)"> 关闭 </d-button>
     </div>
   </d-splitter-pane>
   <d-splitter-pane style="overflow: auto">
@@ -18,7 +24,7 @@
         id="senti-app"
         name="senti-app"
         url=""
-        default-page="form-design"
+        default-page="formDesigner"
         destroy
         clear-data
       ></micro-app>

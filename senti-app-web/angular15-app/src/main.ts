@@ -2,8 +2,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { NgModuleRef, enableProdMode } from '@angular/core';
-import microApp from '@micro-zoe/micro-app';
-import 'zone.js';
 
 declare global {
   interface Window {
@@ -41,8 +39,3 @@ if (!window.__MICRO_APP_ENVIRONMENT__) {
     app = undefined;
   };
 }
-
-// -------------------主应用配置-------------------- //
-microApp.start({
-  tagName: 'micro-app-senti-child',
-});

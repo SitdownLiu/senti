@@ -51,4 +51,14 @@ export class FormSchemaService {
   deleteList(id) {
     return this.httpService.delete('/schemas/formSchema', id);
   }
+
+  // 查询详情
+  queryDetail(id) {
+    return this.httpService.get(`/schemas/formSchema/query/${id}`);
+  }
+
+  // 修改表单配置
+  patchConfig(id, data) {
+    return this.httpService.patch('/schemas/formSchema/config', id, data);
+  }
 }

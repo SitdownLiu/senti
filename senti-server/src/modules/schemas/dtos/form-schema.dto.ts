@@ -111,3 +111,15 @@ export class PatchFormSchemaListDto {
   @ApiProperty({ required: false, description: '备注' })
   remark: string;
 }
+
+// 表单模型 -修改表单模型配置参数
+export class PatchFormSchemaConfigDto {
+  @ApiProperty({ required: false, description: 'Json_Schema' })
+  jsonSchema: object;
+
+  @ApiProperty({ required: false, description: 'XML_Schema' })
+  xmlSchema: string;
+
+  @ApiProperty({ required: false, description: '按钮配置' })
+  btnConfig: object;
+}
