@@ -14,6 +14,7 @@ export default {
         id: 'ID',
         name: 'Form Name',
         type: 'Form Type',
+        appType: 'App Type',
         formEngineType: 'Engine Type',
         formUrl: 'Form URL',
         remark: 'Remark',

@@ -14,9 +14,9 @@
                 <th dHeadCell>{{ 'page.formSchema.columns.id' | translate }}</th>
                 <th dHeadCell>{{ 'page.formSchema.columns.name' | translate }}</th>
                 <th dHeadCell>{{ 'page.formSchema.columns.type' | translate }}</th>
+                <th dHeadCell>{{ 'page.formSchema.columns.appType' | translate }}</th>
                 <th dHeadCell>{{ 'page.formSchema.columns.formEngineType' | translate }}</th>
                 <th dHeadCell>{{ 'page.formSchema.columns.formUrl' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.remark' | translate }}</th>
                 <th dHeadCell>{{ 'page.formSchema.columns.actions' | translate }}</th>
                 <th dHeadCell>{{ 'page.formSchema.columns.operate' | translate }}</th>
               </tr>
@@ -106,6 +106,39 @@
                       ></d-select>
                     </div>
                   </td>
+                  <!-- 应用类型 -->
+                  <td
+                    dTableCell
+                    [editable]="true"
+                    [editableTip]="editableTip"
+                    [(editing)]="rowItem['appTypeEdit']"
+                    [rowItem]="rowItem"
+                    [field]="'appType'"
+                    [beforeEditStart]="beforeEditStart"
+                    [beforeEditEnd]="beforeEditEnd"
+                  >
+                    <span *ngIf="!rowItem['appTypeEdit']">
+                      <d-tag
+                        [(checked)]="rowItem.appType"
+                        [tag]="rowItem?.appType"
+                        [labelStyle]="
+                          rowItem?.appType === 'vue3'
+                            ? 'olivine-w98'
+                            : rowItem?.appType === 'react18'
+                            ? 'blue-w98'
+                            : 'red-w98'
+                        "
+                      ></d-tag>
+                    </span>
+                    <div *ngIf="rowItem['appTypeEdit']" class="edit-padding-fix">
+                      <d-select
+                        [appendToBody]="true"
+                        [options]="options.appType"
+                        [name]="'appType'"
+                        [(ngModel)]="rowItem.appType"
+                      ></d-select>
+                    </div>
+                  </td>
                   <!-- 表单引擎类型 -->
                   <td
                     dTableCell
@@ -149,24 +182,6 @@
                     </span>
                     <div *ngIf="rowItem['formUrlEdit']" class="edit-padding-fix">
                       <input dTextInput size="sm" [(ngModel)]="rowItem.formUrl" />
-                    </div>
-                  </td>
-                  <!-- 备注 -->
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['remarkEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'remark'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
-                  >
-                    <span *ngIf="!rowItem['remarkEdit']">
-                      {{ rowItem.remark }}
-                    </span>
-                    <div *ngIf="rowItem['remarkEdit']" class="edit-padding-fix">
-                      <input dTextInput size="sm" [(ngModel)]="rowItem.remark" />
                     </div>
                   </td>
                   <!-- 配置 -->

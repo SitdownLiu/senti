@@ -14,6 +14,7 @@ export default {
         id: 'ID',
         name: '表单名称',
         type: '表单类型',
+        appType: '应用类型',
         formEngineType: '表单引擎类型',
         formUrl: '表单URL',
         remark: '备注',

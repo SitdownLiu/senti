@@ -36,18 +36,19 @@ export class SchemasService {
       skip = (pageNum - 1) * take || 0;
 
     const qb = this.formSchema
-      .createQueryBuilder('user')
+      .createQueryBuilder('form')
       .select([
-        'user.id',
-        'user.name',
-        'user.type',
-        'user.formEngineType',
-        'user.formUrl',
-        'user.remark',
-        'user.create_at',
-        'user.update_at',
+        'form.id',
+        'form.name',
+        'form.type',
+        'form.appType',
+        'form.formEngineType',
+        'form.formUrl',
+        'form.remark',
+        'form.create_at',
+        'form.update_at',
       ])
-      .orderBy('update_at', 'DESC');
+      .orderBy('create_at', 'DESC');
 
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });

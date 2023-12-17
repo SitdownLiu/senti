@@ -8,6 +8,13 @@ export enum FormTypeEnum {
   FormUrl = 'FormUrl',
 }
 
+// 应用类型选项
+export enum AppTypeEnum {
+  vue3 = 'vue3',
+  react18 = 'react18',
+  angular15 = 'angular15',
+}
+
 // 表单模型信息
 export class FormSchemaInfoDto {
   @ApiProperty({ required: false, description: '表单模型id' })
@@ -24,6 +31,14 @@ export class FormSchemaInfoDto {
   @IsNotEmpty({ message: '[表单类型]必填' })
   @IsEnum(FormTypeEnum)
   type: string;
+
+  @ApiProperty({
+    enum: AppTypeEnum,
+    description: '应用类型：vue3, react18, angular15',
+  })
+  @IsNotEmpty({ message: '[应用类型]必填' })
+  @IsEnum(AppTypeEnum)
+  appType: string;
 
   @ApiProperty({
     required: false,
@@ -64,6 +79,13 @@ export class PageFormSchemaDto extends PageDto {
 
   @ApiProperty({
     required: false,
+    enum: AppTypeEnum,
+    description: '应用类型：vue3, react18, angular15',
+  })
+  appType?: string;
+
+  @ApiProperty({
+    required: false,
     description: '表单引擎类型（表单类型为[FormEngine]）',
   })
   formEngineType?: string;
@@ -95,6 +117,13 @@ export class PatchFormSchemaListDto {
     description: '表单类型：表单引擎，用户自定义',
   })
   type: string;
+
+  @ApiProperty({
+    required: false,
+    enum: AppTypeEnum,
+    description: '应用类型：vue3, react18, angular15',
+  })
+  appType: string;
 
   @ApiProperty({
     required: false,

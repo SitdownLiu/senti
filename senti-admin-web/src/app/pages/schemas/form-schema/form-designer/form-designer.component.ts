@@ -46,7 +46,7 @@ export class FormDesignerComponent implements OnInit {
   // 查询表单详情
   queryFormSchemaDetail() {
     this.formSchemaService.queryDetail(this.formId).then((res) => {
-      const { formEngineType } = res;
+      const { appType, formEngineType } = res;
       if (isEmpty(formEngineType)) {
         this.toolService.openModal({
           type: 'warning',
@@ -57,7 +57,7 @@ export class FormDesignerComponent implements OnInit {
         const [engineUrl, engineName] = formEngineType.split('-');
 
         this.formSchemaDetail = res;
-        this.engineUrl = this.formEngine[engineUrl];
+        this.engineUrl = this.formEngine[appType];
         this.engineName = engineName;
         // 加载子应用
         this.loadSentiApp(this.sentiApp, this.engineUrl);

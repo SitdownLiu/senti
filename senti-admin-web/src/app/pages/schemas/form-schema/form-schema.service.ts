@@ -15,16 +15,23 @@ export interface ListPager {
 export class FormSchemaService {
   constructor(private httpService: HttpService) {}
 
-  private formTypeOptions = [
+  private formTypeOptions: any[] = [
     { name: '表单引擎', value: 'FormEngine' },
     { name: '用户自定义', value: 'FormUrl' },
   ];
 
-  private formEngineTypeOptions = ['vue3-vform3'];
+  private appTypeOptions: String[] = ['vue3', 'react18', 'angular15'];
+
+  private formEngineTypeOptions: String[] = ['vue3-vform3'];
 
   // 加载表单类型
   loadFormTypeOptions() {
     return this.formTypeOptions;
+  }
+
+  // 加载应用类型
+  loadAppTypeOptions() {
+    return this.appTypeOptions;
   }
 
   // 加载表单引擎类型

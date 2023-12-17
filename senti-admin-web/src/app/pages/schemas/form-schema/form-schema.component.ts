@@ -33,6 +33,7 @@ export class FormSchemaComponent implements OnInit {
   // 下拉选项
   options = {
     formType: this.formSchemaService.loadFormTypeOptions(),
+    appType: this.formSchemaService.loadAppTypeOptions(),
     formEngineType: this.formSchemaService.loadFormEngineTypeOptions(),
   };
 
@@ -64,6 +65,16 @@ export class FormSchemaComponent implements OnInit {
         },
       },
       {
+        label: 'appType',
+        prop: 'appType',
+        type: 'select',
+        options: this.options.appType,
+        required: true,
+        rule: {
+          validators: [{ required: true }],
+        },
+      },
+      {
         label: 'remark',
         prop: 'remark',
         type: 'input',
@@ -73,6 +84,7 @@ export class FormSchemaComponent implements OnInit {
   formData = {
     name: '',
     type: '',
+    appType: '',
     remark: '',
   };
 
@@ -88,7 +100,11 @@ export class FormSchemaComponent implements OnInit {
     },
     {
       field: 'type',
-      width: '120px',
+      width: '100px',
+    },
+    {
+      field: 'appType',
+      width: '100px',
     },
     {
       field: 'formEngineType',
@@ -97,10 +113,6 @@ export class FormSchemaComponent implements OnInit {
     {
       field: 'formUrl',
       width: '120px',
-    },
-    {
-      field: 'remark',
-      width: '100px',
     },
     {
       field: 'actions',

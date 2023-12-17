@@ -18,6 +18,13 @@ export class FormSchema extends BaseColumnEntity {
 
   @Column({
     length: 32,
+    nullable: false,
+    comment: '应用类型：vue3, react18, angular15',
+  })
+  appType: string;
+
+  @Column({
+    length: 32,
     nullable: true,
     comment: '表单引擎类型（表单类型为[FormEngine]）',
   })
