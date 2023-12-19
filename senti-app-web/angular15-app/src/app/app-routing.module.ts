@@ -7,6 +7,10 @@ const routes: Routes = [
     path: 'formDesigner',
     component: FormDesignComponent,
   },
+  {
+    path: 'formCustom',
+    loadChildren: () => import('./pages/form-custom/form-custom.module').then((m) => m.FormCustomModule),
+  },
 ];
 
 @NgModule({

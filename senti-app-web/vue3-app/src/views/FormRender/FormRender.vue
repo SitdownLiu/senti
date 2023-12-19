@@ -49,7 +49,7 @@ const onMainAppData = (data) => {
     // 加载表单模型
     if (name === 'formSchema') loadFormSchema(value);
     // 加载表单数据
-    if (name === 'formData') loadFormData(value);
+    if (name === 'formData') setFormData(value);
   }
 };
 
@@ -59,7 +59,7 @@ const loadFormSchema = async ({ engineName, schema }) => {
   formSchema.value = schema;
 };
 // 加载表单数据
-const loadFormData = async (data) => {
+const setFormData = async (data) => {
   if (data.businessId) businessId.value = data.businessId;
   if (data.formData) formData.value = data.formData;
 

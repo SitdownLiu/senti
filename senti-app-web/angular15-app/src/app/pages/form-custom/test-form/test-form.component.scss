@@ -1,0 +1,31 @@
+@import 'ng-devui/styles-var/devui-var.scss';
+
+:host form {
+  width: 450px;
+}
+
+.single-checkbox {
+  display: inline-block;
+  margin-right: 4px;
+  height: 28px;
+}
+
+:host ::ng-deep .devui-radio-horizontal d-radio {
+  display: inline-block;
+}
+
+.single-radio {
+  line-height: 40px;
+}
+
+.plan-desc {
+  height: 80px;
+}
+
+.test-form {
+  width: 100%;
+
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
