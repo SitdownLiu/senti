@@ -4,8 +4,9 @@ import { environment } from './../../../../../environments/environment';
 import { FormSchemaService } from '../form-schema.service';
 import { isEmpty } from 'class-validator';
 import { ToolService } from './../../../../@core/services/tool.service';
-import { DialogService } from 'ng-devui';
+import { DialogService, Message } from 'ng-devui';
 import { JsonViewerComponent } from 'src/app/@shared/components/json-viewer/json-viewer.component';
+import { JsonEditorComponent } from 'src/app/@shared/components/json-editor/json-editor.component';
 
 @Component({
   selector: 'app-form-render',
@@ -148,7 +149,58 @@ export class FormRenderComponent implements OnInit, OnDestroy {
   }
 
   // 加载测试数据
-  setTestData() {}
+  setTestData() {
+    const formDataSchemaDialog = this.dialogService.open({
+      dialogtype: 'info',
+      showAnimation: true,
+      title: '测试数据（Test Data）',
+      maxHeight: '600px',
+      width: '600px',
+      zIndex: 1000,
+      backdropCloseable: true,
+      content: JsonEditorComponent,
+      data: {
+        content: this.formSchemaDetail.dataSchema,
+        config: {
+          lineNumbers: true,
+          theme: 'material',
+          mode: 'application/json',
+        },
+      },
+      buttons: [
+        {
+          cssClass: 'primary',
+          text: '保存',
+          disabled: false,
+          handler: ($event: Event) => {
+            try {
+              const data = JSON.parse(formDataSchemaDialog.modalContentInstance.handlerContent);
+              microApp.forceSetData('senti-app', {
+                type: 'message',
+                name: 'formData',
+                value: { formId: this.formId, formData: data },
+              });
+              formDataSchemaDialog.modalInstance.hide();
+            } catch (error) {
+              this.toolService.openModal({
+                type: 'failed',
+                title: '类型错误',
+                content: '不是有效的JSON格式。',
+              });
+            }
+          },
+        },
+        {
+          id: 'btn-cancel',
+          cssClass: 'common',
+          text: '关闭',
+          handler: ($event: Event) => {
+            formDataSchemaDialog.modalInstance.hide();
+          },
+        },
+      ],
+    });
+  }
 
   // 打开Json浏览器
   openJsonViewer(value) {

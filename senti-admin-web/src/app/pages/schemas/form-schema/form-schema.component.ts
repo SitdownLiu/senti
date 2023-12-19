@@ -325,7 +325,7 @@ export class FormSchemaComponent implements OnInit {
   openFormTestDataConfig = (formId) => {
     this.formSchemaService.queryDetail(formId).then((res) => {
       const { dataSchema } = res;
-      const formTestDataDialog = this.dialogService.open({
+      const formDataSchemaDialog = this.dialogService.open({
         dialogtype: 'info',
         showAnimation: true,
         title: '数据模型配置（Data Schema Config）',
@@ -344,16 +344,18 @@ export class FormSchemaComponent implements OnInit {
             disabled: false,
             handler: ($event: Event) => {
               try {
-                const dataSchema = JSON.parse(formTestDataDialog.modalContentInstance.handlerContent);
+                const dataSchema = JSON.parse(formDataSchemaDialog.modalContentInstance.handlerContent);
                 this.formSchemaService
-                  .patchConfig(formId, { dataSchema: formTestDataDialog.modalContentInstance.handlerContent })
+                  .patchConfig(formId, {
+                    dataSchema: formDataSchemaDialog.modalContentInstance.handlerContent,
+                  })
                   .then((res) => {
                     this.toolService.openModal({
                       type: 'success',
                       title: '操作成功',
                       content: `ID[${formId}]的表单数据模型配置已保存。`,
                     });
-                    formTestDataDialog.modalInstance.hide();
+                    formDataSchemaDialog.modalInstance.hide();
                   })
                   .finally(() => {});
               } catch (error) {
@@ -370,7 +372,7 @@ export class FormSchemaComponent implements OnInit {
             cssClass: 'common',
             text: '关闭',
             handler: ($event: Event) => {
-              formTestDataDialog.modalInstance.hide();
+              formDataSchemaDialog.modalInstance.hide();
             },
           },
         ],

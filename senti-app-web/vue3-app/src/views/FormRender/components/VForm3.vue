@@ -28,7 +28,9 @@ const setFormSchema = async () => {
 };
 
 // 加载表单数据
-const setFormData = async () => {};
+const setFormData = async (data) => {
+  render.value.setFormData(data);
+};
 
 // 获取表单数据
 const getFormData = () => {

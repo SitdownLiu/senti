@@ -17,6 +17,7 @@ import VForm3 from './components/VForm3.vue';
 const formEngineName = ref(''); // 设计器名称
 const formSchema = ref({}); // 表单设计模型
 const formData = ref({}); //表单数据
+const businessId = ref('');
 
 //---------------------- 表单设计器组件 ---------------------//
 const vform3 = ref();
@@ -47,6 +48,8 @@ const onMainAppData = (data) => {
     const { value } = data;
     // 加载表单模型
     if (name === 'formSchema') loadFormSchema(value);
+    // 加载表单数据
+    if (name === 'formData') loadFormData(value);
   }
 };
 
@@ -54,6 +57,13 @@ const onMainAppData = (data) => {
 const loadFormSchema = async ({ engineName, schema }) => {
   formEngineName.value = engineName;
   formSchema.value = schema;
+};
+// 加载表单数据
+const loadFormData = async (data) => {
+  if (data.businessId) businessId.value = data.businessId;
+  if (data.formData) formData.value = data.formData;
+
+  if (formEngineName.value === 'vform3') vform3.value.setFormData(data.formData);
 };
 
 // 提交数据
