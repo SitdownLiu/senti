@@ -37,14 +37,17 @@ export class FormSchema extends BaseColumnEntity {
   })
   formUrl: string;
 
-  @Column({ type: 'json', nullable: true, comment: 'Json_Schema' })
+  @Column({ type: 'json', nullable: true, comment: '设计模型（JSON）' })
   jsonSchema: string;
 
-  @Column({ type: 'longtext', nullable: true, comment: 'XML_Schema' })
+  @Column({ type: 'longtext', nullable: true, comment: '设计模型（XML）' })
   xmlSchema: string;
 
   @Column({ type: 'json', nullable: true, comment: '按钮配置' })
   btnConfig: string;
+
+  @Column({ type: 'longtext', nullable: true, comment: '数据模型' })
+  dataSchema: string;
 
   @Column({ length: 255, nullable: true, comment: '备注' })
   remark: string;

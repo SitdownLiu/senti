@@ -52,14 +52,17 @@ export class FormSchemaInfoDto {
   })
   formUrl: string;
 
-  @ApiProperty({ required: false, description: 'Json_Schema' })
+  @ApiProperty({ required: false, description: '设计模型（JSON）' })
   jsonSchema: object;
 
-  @ApiProperty({ required: false, description: 'XML_Schema' })
+  @ApiProperty({ required: false, description: '设计模型（XML）' })
   xmlSchema: string;
 
   @ApiProperty({ required: false, description: '按钮配置' })
   btnConfig: object;
+
+  @ApiProperty({ required: false, description: '数据模型' })
+  dataSchema: string;
 
   @ApiProperty({ required: false, description: '备注' })
   remark: string;
@@ -143,12 +146,15 @@ export class PatchFormSchemaListDto {
 
 // 表单模型 -修改表单模型配置参数
 export class PatchFormSchemaConfigDto {
-  @ApiProperty({ required: false, description: 'Json_Schema' })
+  @ApiProperty({ required: false, description: '设计模型（JSON）' })
   jsonSchema: object;
 
-  @ApiProperty({ required: false, description: 'XML_Schema' })
+  @ApiProperty({ required: false, description: '设计模型（XML）' })
   xmlSchema: string;
 
   @ApiProperty({ required: false, description: '按钮配置' })
   btnConfig: object;
+
+  @ApiProperty({ required: false, description: '数据模型' })
+  dataSchema: string;
 }

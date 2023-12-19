@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { DrawerService, IDrawerOpenResult } from 'ng-devui/drawer';
 import { FormDesignerComponent } from './form-designer/form-designer.component';
 import { FormRenderComponent } from './form-render/form-render.component';
+import { JsonEditorComponent } from 'src/app/@shared/components/json-editor/json-editor.component';
+import { ToolService } from './../../../@core/services/tool.service';
 
 @Component({
   selector: 'da-form-schema',
@@ -135,7 +137,8 @@ export class FormSchemaComponent implements OnInit {
     private dialogService: DialogService,
     private formSchemaService: FormSchemaService,
     private translateService: TranslateService,
-    private drawerService: DrawerService
+    private drawerService: DrawerService,
+    private toolService: ToolService
   ) {}
 
   ngOnInit() {
@@ -312,6 +315,66 @@ export class FormSchemaComponent implements OnInit {
           this.formRenderDrawer.drawerInstance.hide();
         },
       },
+    });
+  };
+
+  // --------------- 测试数据配置 -----------------//
+  activeFormId: string; //当前激活的表单id
+
+  // 打开“测试数据”配置界面
+  openFormTestDataConfig = (formId) => {
+    this.formSchemaService.queryDetail(formId).then((res) => {
+      const { dataSchema } = res;
+      const formTestDataDialog = this.dialogService.open({
+        dialogtype: 'info',
+        showAnimation: true,
+        title: '数据模型配置（Data Schema Config）',
+        maxHeight: '600px',
+        width: '600px',
+        zIndex: 1000,
+        backdropCloseable: true,
+        content: JsonEditorComponent,
+        data: {
+          content: dataSchema,
+        },
+        buttons: [
+          {
+            cssClass: 'primary',
+            text: '保存',
+            disabled: false,
+            handler: ($event: Event) => {
+              try {
+                const dataSchema = JSON.parse(formTestDataDialog.modalContentInstance.handlerContent);
+                this.formSchemaService
+                  .patchConfig(formId, { dataSchema: formTestDataDialog.modalContentInstance.handlerContent })
+                  .then((res) => {
+                    this.toolService.openModal({
+                      type: 'success',
+                      title: '操作成功',
+                      content: `ID[${formId}]的表单数据模型配置已保存。`,
+                    });
+                    formTestDataDialog.modalInstance.hide();
+                  })
+                  .finally(() => {});
+              } catch (error) {
+                this.toolService.openModal({
+                  type: 'failed',
+                  title: '类型错误',
+                  content: '不是有效的JSON格式。',
+                });
+              }
+            },
+          },
+          {
+            id: 'btn-cancel',
+            cssClass: 'common',
+            text: '关闭',
+            handler: ($event: Event) => {
+              formTestDataDialog.modalInstance.hide();
+            },
+          },
+        ],
+      });
     });
   };
 }

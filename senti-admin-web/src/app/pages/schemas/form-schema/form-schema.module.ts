@@ -19,6 +19,7 @@ import { FormDesignerComponent } from './form-designer/form-designer.component';
 import { FormDesignerModule } from './form-designer/form-designer.module';
 import { FormRenderModule } from './form-render/form-render.module';
 import { CommonModule } from '@angular/common';
+import { JsonEditorModule } from 'src/app/@shared/components/json-editor/json-editor.module';
 
 @NgModule({
   declarations: [FormSchemaComponent, FormSchemaPipe],
@@ -36,6 +37,7 @@ import { CommonModule } from '@angular/common';
     DatepickerModule,
     FormDesignerModule,
     FormRenderModule,
+    JsonEditorModule,
   ],
   exports: [FormSchemaComponent],
   providers: [ListDataService, FormSchemaService],

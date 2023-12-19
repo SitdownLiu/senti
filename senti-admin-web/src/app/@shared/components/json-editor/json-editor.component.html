@@ -1,0 +1,7 @@
+<div class="json-editor">
+  <ngx-codemirror
+    [(ngModel)]="content"
+    [options]="config"
+    (cursorActivity)="codeChange(content,data)"
+  ></ngx-codemirror>
+</div>

@@ -189,10 +189,18 @@
                     <d-button
                       bsStyle="text"
                       icon="icon-feedback2"
-                      bsSize="lg"
+                      bsSize="sm"
                       (btnClick)="openFormDesignerDrawer(rowItem.id)"
                     >
                       设计
+                    </d-button>
+                    <d-button
+                      bsStyle="text"
+                      icon="icon-code"
+                      bsSize="sm"
+                      (btnClick)="openFormTestDataConfig(rowItem.id)"
+                    >
+                      数据
                     </d-button>
                   </td>
                   <!-- 操作 -->
@@ -200,7 +208,7 @@
                     <d-button
                       icon="icon-trigger"
                       bsStyle="text"
-                      bsSize="lg"
+                      bsSize="sm"
                       title="预览"
                       (click)="openFormRenderDrawer(rowItem.id)"
                     >
@@ -209,7 +217,7 @@
                     <d-button
                       icon="icon-delete"
                       bsStyle="text"
-                      bsSize="lg"
+                      bsSize="sm"
                       title="删除"
                       (click)="deleteRow(rowItem, rowIndex)"
                     >
