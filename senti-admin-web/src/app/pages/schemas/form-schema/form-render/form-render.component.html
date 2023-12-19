@@ -1,1 +1,30 @@
-<p>form-render works!</p>
+<d-splitter class="form-render-drawer" style="height: 100vh" orientation="vertical" [disabledBarSize]="'2px'">
+  <d-splitter-pane size="40px" minSize="40px" [collapsed]="false" [collapsible]="true">
+    <div class="form-render-drawer-header">
+      <d-button
+        icon="icon-save"
+        bsStyle="primary"
+        [style.marginRight]="'12px'"
+        [showLoading]="loadingType"
+        (btnClick)="setTestData()"
+      >
+        加载测试数据
+      </d-button>
+      <d-button
+        icon="icon-save"
+        bsStyle="primary"
+        [style.marginRight]="'12px'"
+        [showLoading]="loadingType"
+        (btnClick)="submit()"
+      >
+        提交表单数据
+      </d-button>
+      <d-button icon="icon-close" bsStyle="common" (btnClick)="close($event)"> 关闭 </d-button>
+    </div>
+  </d-splitter-pane>
+  <d-splitter-pane style="overflow: auto">
+    <div class="form-render-drawer-content">
+      <micro-app id="senti-app" name="senti-app" url="" default-page="" destroy clear-data></micro-app>
+    </div>
+  </d-splitter-pane>
+</d-splitter>

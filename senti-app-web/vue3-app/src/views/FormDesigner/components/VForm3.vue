@@ -2,7 +2,7 @@
   <v-form-designer ref="designer" :designer-config="designerConfig"></v-form-designer>
 </template>
 
-<script setup name="VForm3">
+<script setup name="VForm3Designer">
 import { onMounted, defineEmits, defineExpose, defineProps, ref } from 'vue';
 
 // 参数
@@ -13,7 +13,7 @@ const props = defineProps({
   },
 });
 // 事件
-const emit = defineEmits(['']);
+const emit = defineEmits(['onFormSchema']);
 
 // 表单设计器配置
 const designerConfig = {
@@ -33,8 +33,9 @@ const setFormSchema = () => {
 };
 
 // 获取表单设计模型
-const getFormSchema = () => {
-  return designer.value.getFormJson();
+const getFormSchema = async () => {
+  const schema = await designer.value.getFormJson();
+  await emit('onFormSchema', JSON.parse(JSON.stringify(schema)));
 };
 
 defineExpose({ setFormSchema, getFormSchema });

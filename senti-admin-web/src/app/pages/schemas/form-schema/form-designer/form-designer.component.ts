@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import microApp from '@micro-zoe/micro-app';
 import { environment } from './../../../../../environments/environment';
 import { FormSchemaService } from '../form-schema.service';
@@ -10,22 +10,20 @@ import { ToolService } from './../../../../@core/services/tool.service';
   templateUrl: './form-designer.component.html',
   styleUrls: ['./form-designer.component.scss'],
 })
-export class FormDesignerComponent implements OnInit {
+export class FormDesignerComponent implements OnInit, OnDestroy {
   @Input() formId: String;
   @Input() close: Function;
 
   loadingType: boolean = true;
 
+  // 子应用Dom
   sentiApp = null;
 
-  private readonly angular15AppUrl = environment.angular15AppUrl;
-  private readonly vue3AppUrl = environment.vue3AppUrl;
-  private readonly react18AppUrl = environment.react18AppUrl;
-
-  formEngine = {
-    angular15: this.angular15AppUrl,
-    react18: this.react18AppUrl,
-    vue3: this.vue3AppUrl,
+  // 子应用Url
+  private readonly sentiAppUrl = {
+    angular15: environment.angular15AppUrl,
+    react18: environment.react18AppUrl,
+    vue3: environment.vue3AppUrl,
   };
 
   formSchemaDetail: any = {};
@@ -43,6 +41,11 @@ export class FormDesignerComponent implements OnInit {
     microApp.addDataListener('senti-app', (data) => this.onSentiaAppData(data));
   }
 
+  ngOnDestroy(): void {
+    // 清空所有监听指定子应用的函数
+    microApp.clearDataListener('senti-app');
+  }
+
   // 查询表单详情
   queryFormSchemaDetail() {
     this.formSchemaService.queryDetail(this.formId).then((res) => {
@@ -57,7 +60,7 @@ export class FormDesignerComponent implements OnInit {
         const [engineUrl, engineName] = formEngineType.split('-');
 
         this.formSchemaDetail = res;
-        this.engineUrl = this.formEngine[appType];
+        this.engineUrl = this.sentiAppUrl[appType];
         this.engineName = engineName;
         // 加载子应用
         this.loadSentiApp(this.sentiApp, this.engineUrl);
@@ -68,16 +71,14 @@ export class FormDesignerComponent implements OnInit {
   // 监听：senti-app的消息
   onSentiaAppData(data) {
     console.log('来自senti-app的消息：', data);
-    const { type } = data;
+    const { type, name } = data;
     // 处理事件：event
     if (type === 'event') {
-      const { name } = data;
       if (name === 'mounted') this.sentiAppMounted(data);
     }
 
     // 处理消息:message
     if (type === 'message') {
-      const { name } = data;
       if (name === 'formSchema') this.onSentiAppFormSchema(data);
     }
 
@@ -97,7 +98,7 @@ export class FormDesignerComponent implements OnInit {
     // 发送formId
     microApp.setData('senti-app', {
       type: 'message',
-      name: 'formSchemaDetail',
+      name: 'formSchema',
       value: {
         engineName: this.engineName,
         schema: this.formSchemaDetail.jsonSchema,
@@ -117,8 +118,8 @@ export class FormDesignerComponent implements OnInit {
       .then((res) => {
         this.toolService.openModal({
           type: 'success',
-          title: '操作成功',
-          content: `表单[${this.formId}]的设计模型数据保存成功`,
+          title: '保存成功',
+          content: `ID[${this.formId}]的表单设计模型数据已保存。`,
         });
       })
       .finally(() => {

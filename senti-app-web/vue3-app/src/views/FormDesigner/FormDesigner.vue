@@ -1,9 +1,14 @@
 <template>
-  <v-form3 v-if="formEngineName === 'vform3'" ref="vform3" :schema="formSchema"></v-form3>
+  <v-form3
+    v-if="formEngineName === 'vform3'"
+    ref="vform3"
+    :schema="formSchema"
+    @onFormSchema="sendFormSchema"
+  ></v-form3>
 </template>
 
 <script setup name="FormDesigner">
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import VForm3 from './components/VForm3.vue';
 
 const formEngineName = ref(''); // 设计器名称
@@ -13,15 +18,15 @@ const formSchema = ref({}); // 表单设计模型
 const vform3 = ref();
 
 onMounted(() => {
-  // window.microApp.dispatch({ type: 'vue3-渲染完成' });
-  // window.microApp.addDataListener((data) => {
-  //   console.log('vue3-app收到：', data);
-  // });
-  // window.postMessage('vue3-渲染完成')
   // 通知主应用：渲染完成
   window.microApp.dispatch({ type: 'event', name: 'mounted' });
   // 监听：主应用的消息
   window.microApp.addDataListener((data) => onMainAppData(data));
+});
+
+onUnmounted(() => {
+  // 清空当前子应用的所有绑定函数(全局数据函数除外)
+  window.microApp.clearDataListener();
 });
 
 // 监听：主应用的消息
@@ -49,14 +54,16 @@ const loadFormDesigner = async ({ engineName, schema }) => {
 };
 
 // 获取表设设计模型
-const getFormSchema = async () => {
-  if (formEngineName.value === 'vform3') formSchema.value = await vform3.value.getFormSchema();
+const getFormSchema = () => {
+  if (formEngineName.value === 'vform3') vform3.value.getFormSchema();
+};
 
-  // 发送formSchema至主应用
-  await window.microApp.dispatch({
+// 发送：表单设计模型
+const sendFormSchema = (schema) => {
+  window.microApp.dispatch({
     type: 'message',
     name: 'formSchema',
-    value: JSON.parse(JSON.stringify(formSchema.value)),
+    value: schema,
   });
 };
 </script>

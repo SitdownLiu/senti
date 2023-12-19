@@ -12,6 +12,7 @@ import { FormSchemaService } from './form-schema.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DrawerService, IDrawerOpenResult } from 'ng-devui/drawer';
 import { FormDesignerComponent } from './form-designer/form-designer.component';
+import { FormRenderComponent } from './form-render/form-render.component';
 
 @Component({
   selector: 'da-form-schema',
@@ -116,16 +117,18 @@ export class FormSchemaComponent implements OnInit {
     },
     {
       field: 'actions',
-      width: '160px',
+      width: '120px',
     },
     {
       field: 'operate',
-      width: '80px',
+      width: '120px',
     },
   ];
 
   // “设计”弹框
   formDesignerDrawer: IDrawerOpenResult;
+  // “预览”弹框
+  formRenderDrawer: IDrawerOpenResult;
 
   constructor(
     private toastService: ToastService,
@@ -273,7 +276,7 @@ export class FormSchemaComponent implements OnInit {
   }
 
   // 打开“设计”界面
-  openFormDesignerDrawer = (formId) => {
+  openFormDesignerDrawer = (formId: String) => {
     this.formDesignerDrawer = this.drawerService.open({
       drawerContentComponent: FormDesignerComponent,
       width: '100vw',
@@ -287,6 +290,26 @@ export class FormSchemaComponent implements OnInit {
         formId,
         close: (event) => {
           this.formDesignerDrawer.drawerInstance.hide();
+        },
+      },
+    });
+  };
+
+  // 打开“预览”界面
+  openFormRenderDrawer = (formId: String) => {
+    this.formRenderDrawer = this.drawerService.open({
+      drawerContentComponent: FormRenderComponent,
+      width: '100vw',
+      zIndex: 1000,
+      isCover: true,
+      fullScreen: true,
+      backdropCloseable: true,
+      escKeyCloseable: true,
+      position: 'right',
+      data: {
+        formId,
+        close: (event) => {
+          this.formRenderDrawer.drawerInstance.hide();
         },
       },
     });

@@ -5,7 +5,12 @@ const routes = [
   {
     path: '/formDesigner',
     name: 'formDesigner',
-    component: () => import('../views/FormDesigner/index.js'),
+    component: () => import('../views/FormDesigner'),
+  },
+  {
+    path: '/formRender',
+    name: 'formRender',
+    component: () => import('../views/FormRender'),
   },
 ];
 

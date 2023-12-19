@@ -198,6 +198,15 @@
                   <!-- 操作 -->
                   <td>
                     <d-button
+                      icon="icon-trigger"
+                      bsStyle="text"
+                      bsSize="lg"
+                      title="预览"
+                      (click)="openFormRenderDrawer(rowItem.id)"
+                    >
+                      预览
+                    </d-button>
+                    <d-button
                       icon="icon-delete"
                       bsStyle="text"
                       bsSize="lg"

@@ -17,6 +17,7 @@ import { FormSchemaService } from './form-schema.service';
 import { FormSchemaPipe } from './form-schema.pipe';
 import { FormDesignerComponent } from './form-designer/form-designer.component';
 import { FormDesignerModule } from './form-designer/form-designer.module';
+import { FormRenderModule } from './form-render/form-render.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -34,6 +35,7 @@ import { CommonModule } from '@angular/common';
     SelectModule,
     DatepickerModule,
     FormDesignerModule,
+    FormRenderModule,
   ],
   exports: [FormSchemaComponent],
   providers: [ListDataService, FormSchemaService],
