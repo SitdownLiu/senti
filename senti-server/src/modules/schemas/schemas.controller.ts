@@ -12,7 +12,7 @@ import {
 import { Roles } from 'src/common/common.decorator';
 
 @ApiTags('模型管理')
-@ApiHeader({ name: 'token', description: 'accessToken' })
+@ApiHeader({ name: 'senti_token', description: 'accessToken' })
 @Controller('schemas')
 export class SchemasController {
   constructor(private readonly schemasService: SchemasService) {}
@@ -21,7 +21,7 @@ export class SchemasController {
    ** @表单模型
    **************************************************************/
   @ApiOperation({ summary: '保存表单模型（添加或删除）' })
-  @Roles('admin')
+  @Roles('admin', 'admin-app')
   @Post('/formSchema')
   saveFormSchema(@Body() body: FormSchemaInfoDto) {
     return this.schemasService.saveFormSchema(body);
@@ -29,7 +29,7 @@ export class SchemasController {
 
   @ApiOperation({ summary: '分页查询表单模型列表' })
   @ApiResponse({ status: 200, type: PageFormSchemaRes })
-  @Roles('admin')
+  @Roles('admin', 'admin-app')
   @Get('/formSchema/page')
   pageFormSchema(@Query() query: PageFormSchemaDto) {
     return this.schemasService.pageFormSchema(query);
@@ -37,27 +37,27 @@ export class SchemasController {
 
   @ApiOperation({ summary: '查询表单模型详情' })
   @ApiResponse({ status: 200, type: FormSchemaInfoDto })
-  @Roles('admin')
+  @Roles('admin', 'admin-app', 'user-app')
   @Get('/formSchema/query/:id')
   queryFormSchema(@Param() param: FormSchemaIdDto) {
     return this.schemasService.queryFormSchema(param.id);
   }
 
   @ApiOperation({ summary: '删除表单模型' })
-  @Roles('admin')
+  @Roles('admin', 'admin-app')
   @Delete('/formSchema/:id')
   delteFormSchema(@Param() param: FormSchemaIdDto) {
     return this.schemasService.deleteFormSchema(param.id);
   }
   @ApiOperation({ summary: '修改表单模型列表数据' })
-  @Roles('admin')
+  @Roles('admin', 'admin-app')
   @Patch('/formSchema/list/:id')
   patchFormSchemaList(@Param() param: FormSchemaIdDto, @Body() body: PatchFormSchemaListDto) {
     return this.schemasService.patchFormSchema(param.id, body);
   }
 
   @ApiOperation({ summary: '修改表单模型配置' })
-  @Roles('admin')
+  @Roles('admin', 'admin-app')
   @Patch('/formSchema/config/:id')
   patchFormSchemaConfig(@Param() param: FormSchemaIdDto, @Body() body: PatchFormSchemaConfigDto) {
     return this.schemasService.patchFormSchema(param.id, body);

@@ -10,12 +10,10 @@ import { Role } from '../base/entities/role.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConfig } from './../../config/jwt.config';
 import { JwtStrategy } from './../../strategys/jwt.strategy';
+import { Application } from '../base/entities/application.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User, Role, PrivateApp]),
-    JwtModule.register(jwtConfig),
-  ],
+  imports: [TypeOrmModule.forFeature([User, Role, PrivateApp, Application]), JwtModule.register(jwtConfig)],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
 })

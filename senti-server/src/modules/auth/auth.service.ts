@@ -1,17 +1,13 @@
 import { isEmpty } from 'class-validator';
 import { PrivateApp } from './../base/entities/private-app.entity';
-import {
-  ForbiddenException,
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MD5 } from 'crypto-js';
 import { Repository } from 'typeorm';
 import { Role } from '../base/entities/role.entity';
 import { User } from '../base/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { Application } from './../base/entities/application.entity';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +20,9 @@ export class AuthService {
 
     @InjectRepository(PrivateApp)
     private readonly privateApp: Repository<PrivateApp>,
+
+    @InjectRepository(Application)
+    private readonly application: Repository<Application>,
 
     private readonly jwtService: JwtService,
   ) {}
@@ -39,8 +38,7 @@ export class AuthService {
   //验证用户
   private async validateUser(password, user): Promise<any> {
     if (!user) throw new ForbiddenException(`未注册的用户`);
-    if (!password || MD5(password).toString() !== user.password)
-      throw new ForbiddenException(`登录密码错误`);
+    if (!password || MD5(password).toString() !== user.password) throw new ForbiddenException(`登录密码错误`);
 
     const { id, name, roles, organization, department } = user;
     console.log('用户登录: ', {
@@ -102,8 +100,7 @@ export class AuthService {
         where: { id: appId, secretKey: appSecret },
       });
 
-      if (isEmpty(app))
-        throw new NotFoundException('获取授权失败, 应用id或应用秘钥有误.');
+      if (isEmpty(app)) throw new NotFoundException('获取授权失败, 应用id或应用秘钥有误.');
 
       const { name } = app;
 
@@ -122,6 +119,32 @@ export class AuthService {
       });
 
       return { accessToken };
+    } catch (error) {
+      throw new ForbiddenException(error);
+    }
+  }
+
+  // 应用授权
+  async appToken(dto): Promise<any> {
+    const { appId, appSecret } = dto;
+
+    try {
+      let ret = await this.application.findOne({
+        where: { id: appId, secretKey: appSecret },
+        relations: ['roles'],
+      });
+
+      if (isEmpty(ret)) throw new ForbiddenException('获取授权失败, 应用id或应用秘钥有误.');
+      const { name, roles } = ret;
+      const appInfo = {
+        appId,
+        appSecret,
+        name,
+        roles: roles.map((role) => role.code),
+      };
+      console.log('应用授权: ', appInfo);
+      const accessToken = await this.jwtService.sign(appInfo);
+      return { accessToken, accessKey: 'senti_token' };
     } catch (error) {
       throw new ForbiddenException(error);
     }

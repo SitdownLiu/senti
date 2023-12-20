@@ -1,14 +1,13 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { DictionaryType } from './entities/dictionary-type.entity';
 import { Role } from './entities/role.entity';
 import { Dictionary } from './entities/dictionary.entity';
 import { pageQueryBuilder } from './../../common/common.tools';
+import { Application } from './entities/application.entity';
+import { isEmpty } from 'class-validator';
+import { v4 as uuidV4 } from 'uuid';
 
 @Injectable()
 export class BaseService {
@@ -21,6 +20,9 @@ export class BaseService {
 
     @InjectRepository(Role)
     private readonly role: Repository<Role>,
+
+    @InjectRepository(Application)
+    private readonly application: Repository<Application>,
   ) {}
 
   /**
@@ -48,9 +50,7 @@ export class BaseService {
     const take = pageSize || 10,
       skip = (pageNum - 1) * take || 0;
 
-    const qb = this.dictionaryType
-      .createQueryBuilder()
-      .orderBy('update_at', 'DESC');
+    const qb = this.dictionaryType.createQueryBuilder().orderBy('update_at', 'DESC');
 
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (pageNum || pageSize) {
@@ -168,4 +168,31 @@ export class BaseService {
     }
   }
 
+  /**
+   ** @应用
+   **************************************************************/
+  // 保存（添加或修改）
+  async saveApplication(dto): Promise<any> {
+    const { type, id, name, remark } = dto;
+
+    try {
+      const roleCode = type === 'admin' ? 'admin-app' : 'user-app';
+      const roles = await this.role.find({ where: { code: roleCode } });
+
+      let appInfo: any = { name, remark, roles };
+
+      if (isEmpty(id)) {
+        appInfo.secretKey = await uuidV4();
+        return this.application.save(appInfo);
+      }
+
+      let ret = this.application.findOne({ where: { id } });
+      await this.application.save(Object.assign(ret, appInfo));
+
+      return id;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(error);
+    }
+  }
 }

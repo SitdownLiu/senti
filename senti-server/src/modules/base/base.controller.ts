@@ -10,9 +10,10 @@ import {
 } from './dtos/dictionary-type.dto';
 import { AddOrUpdateDictionaryDto, QueryDictionaryDto, DeleteDictionaryDto, ResDicDto } from './dtos/dictionary.dto';
 import { AddOrUpdateRoleDto, DeleteRoleDto, ResRoleDto } from './dtos/role.dto';
+import { AddApplicationDto } from './dtos/application.dto';
 
 @ApiTags('基础服务')
-@ApiHeader({ name: 'token', description: 'accessToken' })
+@ApiHeader({ name: 'senti_token', description: 'accessToken' })
 @Controller('base')
 export class BaseController {
   constructor(private readonly baseService: BaseService) {}
@@ -87,5 +88,15 @@ export class BaseController {
   @Delete('/role/:id')
   deleteRole(@Param() params: DeleteRoleDto) {
     return this.baseService.deleteRole(params.id);
+  }
+
+  /**
+   ** @应用
+   **************************************************************/
+  @ApiOperation({ summary: '添加或修改应用' })
+  @Roles('admin')
+  @Post('/app')
+  saveApplication(@Body() body: AddApplicationDto) {
+    return this.baseService.saveApplication(body);
   }
 }
