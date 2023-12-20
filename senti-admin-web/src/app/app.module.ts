@@ -10,6 +10,7 @@ import { SharedModule } from './@shared/shared.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { Observable, of } from 'rxjs';
 import { I18N } from '../config/language-config';
+import { FormSchemaModule } from './pages/schemas/form-schema/form-schema.module';
 
 //`TODO:` token
 export function tokenGetter() {
@@ -39,6 +40,7 @@ class I18NLoader implements TranslateLoader {
         useClass: I18NLoader,
       },
     }),
+    FormSchemaModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

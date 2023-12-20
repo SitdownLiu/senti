@@ -20,7 +20,7 @@ export class HttpService {
       senti_token: this.token,
       'Content-Type': 'application/json',
     }),
-    withCredentials: true,
+    withCredentials: false,
   };
 
   constructor(

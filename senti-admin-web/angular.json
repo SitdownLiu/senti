@@ -76,10 +76,10 @@
           "defaultConfiguration": "development",
           "options": {
             "port": 34200,
+            "disableHostCheck": true,
             "headers": {
               "Access-Control-Allow-Origin": "*"
-            },
-            "disableHostCheck": true
+            }
           }
         },
         "extract-i18n": {

@@ -6,6 +6,7 @@ import { RegisterComponent } from './@shared/components/register/register.compon
 import { ServerErrorComponent } from './@shared/components/abnormal/server-error/server-error.component';
 import { ForbiddenComponent } from './@shared/components/abnormal/forbidden/forbidden.component';
 import { NotFoundComponent } from './@shared/components/abnormal/not-found/not-found.component';
+import { FormSchemaComponent } from './pages/schemas/form-schema/form-schema.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,11 @@ const routes: Routes = [
   {
     path: 'pages',
     loadChildren: () => import('./pages/pages.module').then((m) => m.PagesModule),
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'form-schema',
+    component: FormSchemaComponent,
     canActivate: [AuthGuardService],
   },
   {

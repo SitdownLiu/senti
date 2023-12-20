@@ -33,7 +33,7 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
   constructor(private formSchemaService: FormSchemaService, private toolService: ToolService) {}
 
   ngOnInit(): void {
-    this.sentiApp = document.querySelector('micro-app[name=senti-app]');
+    this.sentiApp = document.querySelector('micro-app-senti-app[name=senti-app]');
 
     // 查询表单详情
     this.queryFormSchemaDetail();
