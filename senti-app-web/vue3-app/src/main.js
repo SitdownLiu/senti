@@ -1,19 +1,21 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import "./registerServiceWorker";
-import routes from "./router";
-import store from "./store";
-import { createRouter, createWebHistory } from "vue-router";
+import { createApp } from 'vue';
+import App from './App.vue';
+import './registerServiceWorker';
+import routes from './router';
+import store from './store';
+import { createRouter, createWebHistory } from 'vue-router';
 
 // UI库
-import Antd from "ant-design-vue";
-import "ant-design-vue/dist/reset.css";
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/reset.css';
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
 
 // 表单组件
-import VForm3 from "vform3-builds";
-import "vform3-builds/dist/designer.style.css";
+import VForm3 from 'vform3-builds';
+import 'vform3-builds/dist/designer.style.css';
+import formCreate from '@form-create/element-ui';
+import FcDesigner from '@form-create/designer';
 
 let app = null;
 let router = null;
@@ -30,7 +32,9 @@ window.mount = () => {
   app.use(Antd);
   app.use(ElementPlus);
   app.use(VForm3);
-  app.mount("#app");
+  app.use(formCreate);
+  app.use(FcDesigner);
+  app.mount('#app');
 };
 
 // 卸载

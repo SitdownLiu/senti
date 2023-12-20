@@ -22,7 +22,7 @@ export class FormSchemaService {
 
   private appTypeOptions: String[] = ['vue3', 'react18', 'angular15'];
 
-  private formEngineTypeOptions: String[] = ['vue3-vform3'];
+  private formEngineTypeOptions: String[] = ['vue3-vform3', 'vue3-formcreate'];
 
   // 加载表单类型
   loadFormTypeOptions() {

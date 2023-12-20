@@ -5,17 +5,25 @@
     :schema="formSchema"
     @onFormSchema="sendFormSchema"
   ></v-form3>
+  <form-create
+    v-if="formEngineName === 'formcreate'"
+    ref="formcreate"
+    :schema="formSchema"
+    @onFormSchema="sendFormSchema"
+  ></form-create>
 </template>
 
 <script setup name="FormDesigner">
 import { ref, onMounted, onUnmounted } from 'vue';
 import VForm3 from './components/VForm3.vue';
+import FormCreate from './components/FormCreate.vue';
 
 const formEngineName = ref(''); // 设计器名称
 const formSchema = ref({}); // 表单设计模型
 
 //---------------------- 表单设计器组件 ---------------------//
 const vform3 = ref();
+const formcreate = ref();
 
 onMounted(() => {
   // 通知主应用：渲染完成
@@ -56,6 +64,7 @@ const loadFormDesigner = async ({ engineName, schema }) => {
 // 获取表设设计模型
 const getFormSchema = () => {
   if (formEngineName.value === 'vform3') vform3.value.getFormSchema();
+  if (formEngineName.value === 'formcreate') formcreate.value.getFormSchema();
 };
 
 // 发送：表单设计模型

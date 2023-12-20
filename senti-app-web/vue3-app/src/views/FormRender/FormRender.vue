@@ -7,12 +7,20 @@
       @onPrepared="sendPrepared"
       @onFormData="sendFormData"
     ></v-form3>
+    <form-create
+      v-if="formEngineName === 'formcreate'"
+      ref="formcreate"
+      :schema="formSchema"
+      @onPrepared="sendPrepared"
+      @onFormData="sendFormData"
+    ></form-create>
   </div>
 </template>
 
 <script setup name="FormRender">
 import { ref, onMounted, onUnmounted } from 'vue';
 import VForm3 from './components/VForm3.vue';
+import FormCreate from './components/FormCreate.vue';
 
 const formEngineName = ref(''); // 设计器名称
 const formSchema = ref({}); // 表单设计模型
@@ -21,6 +29,7 @@ const businessId = ref('');
 
 //---------------------- 表单设计器组件 ---------------------//
 const vform3 = ref();
+const formcreate = ref();
 
 onMounted(() => {
   // 通知主应用：渲染完成
@@ -64,11 +73,13 @@ const setFormData = async (data) => {
   if (data.formData) formData.value = data.formData;
 
   if (formEngineName.value === 'vform3') vform3.value.setFormData(data.formData);
+  if (formEngineName.value === 'formcreate') formcreate.value.setFormData(data.formData);
 };
 
 // 提交数据
 const getFormData = () => {
   if (formEngineName.value === 'vform3') vform3.value.getFormData();
+  if (formEngineName.value === 'formcreate') formcreate.value.getFormData();
 };
 
 // 发送：表单准备完成
