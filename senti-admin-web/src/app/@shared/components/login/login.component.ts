@@ -20,6 +20,8 @@ import { LANGUAGES } from 'src/config/language-config';
 export class LoginComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
 
+  logoPath = 'assets/logo.svg';
+
   tabActiveId: string | number = 'tab1';
   showPassword = false;
   horizontalLayout: FormLayout = FormLayout.Horizontal;
@@ -55,7 +57,12 @@ export class LoginComponent implements OnInit {
       validators: [{ required: true }, { email: true }],
     },
     passwordRules: {
-      validators: [{ required: true }, { minlength: 6 }, { maxlength: 15 }, { pattern: /^[a-zA-Z0-9\d@$!%*?&.]+(\s+[a-zA-Z0-9]+)*$/ }],
+      validators: [
+        { required: true },
+        { minlength: 6 },
+        { maxlength: 15 },
+        { pattern: /^[a-zA-Z0-9\d@$!%*?&.]+(\s+[a-zA-Z0-9]+)*$/ },
+      ],
       message: 'Enter a password that contains 6 to 15 digits and letters.',
     },
   };

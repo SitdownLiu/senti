@@ -12,12 +12,12 @@ import { HelperUtils } from 'ng-devui';
 })
 export class HttpService {
   private readonly baseUrl: string = environment.baseUrl;
-  private readonly token: string = localStorage.getItem('senti_token');
+  private readonly token: string = localStorage.getItem('sentitoken');
   private readonly timeOutBackUrl: string = environment.timeOutBackUrl;
 
   private httpOptions = {
     headers: new HttpHeaders({
-      senti_token: this.token,
+      sentitoken: this.token,
       'Content-Type': 'application/json',
     }),
     withCredentials: false,

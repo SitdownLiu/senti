@@ -46,20 +46,20 @@ export class AuthService {
 
   logout() {
     // this.cookieService.deleteAll('/');
-    localStorage.removeItem('senti_token');
+    localStorage.removeItem('sentitoken');
     localStorage.removeItem('userInfo');
     localStorage.removeItem('menu');
     // location.replace(`${this.baseUrl}/user/logout`);
   }
 
   setSession(userInfo: object, token: string) {
-    localStorage.setItem('senti_token', token);
+    localStorage.setItem('sentitoken', token);
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
   }
 
   //是否登录
   isUserLoggedIn() {
-    const token = localStorage.getItem('senti_token');
+    const token = localStorage.getItem('sentitoken');
     if (!isEmpty(token)) {
       return true;
     } else {

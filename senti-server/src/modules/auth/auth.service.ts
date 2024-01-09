@@ -144,7 +144,7 @@ export class AuthService {
       };
       console.log('应用授权: ', appInfo);
       const accessToken = await this.jwtService.sign(appInfo);
-      return { accessToken, accessKey: 'senti_token' };
+      return { accessToken, accessKey: 'sentitoken' };
     } catch (error) {
       throw new ForbiddenException(error);
     }

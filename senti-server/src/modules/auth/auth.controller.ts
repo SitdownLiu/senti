@@ -17,7 +17,7 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: '用户获取自己的信息' })
-  @ApiHeader({ name: 'senti_token', description: 'accessToken' })
+  @ApiHeader({ name: 'sentitoken', description: 'accessToken' })
   @ApiResponse({ status: 200, type: AuthUserInfoDto })
   @UseGuards(AuthGuard('jwt'))
   @Get('/getUserInfo')

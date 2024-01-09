@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   template: `<router-outlet></router-outlet>`,
 })
 export class AppComponent {
-  title = 'angullar15-app';
+  title = 'angular15-app';
 }

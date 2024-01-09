@@ -1,11 +1,11 @@
 {
-  "name": "angullar15-app",
+  "name": "angular15-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "start:proxy": "ng serve --proxy-config proxy.config.json",
-    "build:prod": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

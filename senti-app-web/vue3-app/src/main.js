@@ -3,7 +3,7 @@ import App from './App.vue';
 import './registerServiceWorker';
 import routes from './router';
 import store from './store';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 
 // UI库
 import Antd from 'ant-design-vue';

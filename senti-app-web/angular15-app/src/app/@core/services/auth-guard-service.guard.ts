@@ -19,7 +19,7 @@ export class AuthGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const token = localStorage.getItem('senti_token');
+    const token = localStorage.getItem('sentitoken');
     if (isEmpty(token)) {
       this.dialogService.open({
         title: '[401]未授权的用户',
@@ -32,7 +32,7 @@ export class AuthGuardService implements CanActivate {
             cssClass: 'primary',
             text: '我知道了',
             handler: ($event: Event) => {
-              location.replace('/login');
+              this.router.navigate(['/login']);
             },
           },
         ],

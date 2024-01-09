@@ -4,7 +4,7 @@
     <div class="da-login-logo-wrapper">
       <div class="da-login-logo">
         <span class="da-logo-devui">
-          <img src="../../../../../assets/senti-logo.svg" alt="DevUI-Logo" />
+          <img [src]="logoPath" alt="DevUI-Logo" />
         </span>
         <span class="da-text"> {{ 'title' | translate }}</span>
       </div>
@@ -149,5 +149,8 @@
 </ng-template>
 
 <ng-template #suffixTemplate>
-  <i [class]="showPassword ? 'icon icon-preview' : 'icon icon-preview-forbidden'" (click)="showPassword = !showPassword"></i>
+  <i
+    [class]="showPassword ? 'icon icon-preview' : 'icon icon-preview-forbidden'"
+    (click)="showPassword = !showPassword"
+  ></i>
 </ng-template>

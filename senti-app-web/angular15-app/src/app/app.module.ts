@@ -11,7 +11,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 //`TODO:` token
 export function tokenGetter() {
-  return localStorage.getItem('senti_token');
+  return localStorage.getItem('sentitoken');
 }
 
 @NgModule({

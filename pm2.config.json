@@ -1,0 +1,91 @@
+{
+    "apps": [
+        {
+            "name": "senti-server",
+            "cwd": "./server",
+            "script": "./dist/main.js",
+            "watch": true,
+            "instance_var": "INSTANCE_ID",
+            "exec_mode": "cluster_mode",
+            "instances": 4,
+            "max_memory_restart": "200M",
+            "error_file": "../logs/server/app-err.log",
+            "out_file": "../logs/server/app-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss",
+            "merge_logs": true,
+            "ignore_watch": [
+                "node_modules",
+                "logs",
+                "temp"
+            ]
+        },
+        {
+            "name": "senti-admin-web",
+            "cwd": "./admin",
+            "script":"./server/live-server.js",
+            "watch": true,
+            "exec_mode": "cluster_mode",
+            "instances": 2,
+            "error_file": "../logs/admin-web/app-err.log",
+            "out_file": "../logs/admin-web/app-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss",
+            "merge_logs": true,
+            "ignore_watch": [
+                "node_modules",
+                "logs",
+                "temp"
+            ]
+        },
+        {
+            "name": "senti-app-vue3",
+            "cwd": "./app/vue3",
+            "script":"./server/live-server.js",
+            "watch": true,
+            "exec_mode": "cluster_mode",
+            "instances": 2,
+            "error_file": ".../../logs/app-web/app-vue3-err.log",
+            "out_file": "../../logs/app-web/app-vue3-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss",
+            "merge_logs": true,
+            "ignore_watch": [
+                "node_modules",
+                "logs",
+                "temp"
+            ]
+        },
+        {
+            "name": "senti-app-angular15",
+            "cwd": "./app/angular15",
+            "script":"./server/live-server.js",
+            "watch": true,
+            "exec_mode": "cluster_mode",
+            "instances": 2,
+            "error_file": ".../../logs/app-web/app-angular15-err.log",
+            "out_file": "../../logs/app-web/app-angular15-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss",
+            "merge_logs": true,
+            "ignore_watch": [
+                "node_modules",
+                "logs",
+                "temp"
+            ]
+        },
+        {
+            "name": "senti-app-react18",
+            "cwd": "./app/react18",
+            "script":"./server/live-server.js",
+            "watch": true,
+            "exec_mode": "cluster_mode",
+            "instances": 2,
+            "error_file": ".../../logs/app-web/app-react18-err.log",
+            "out_file": "../../logs/app-web/app-react18-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss",
+            "merge_logs": true,
+            "ignore_watch": [
+                "node_modules",
+                "logs",
+                "temp"
+            ]
+        }
+    ]
+}

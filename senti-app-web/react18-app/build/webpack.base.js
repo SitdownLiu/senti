@@ -10,7 +10,7 @@ module.exports = {
     filename: "static/js/[name].js",
     path: path.join(__dirname, "../dist"),
     clean: true,
-    publicPath: "/",
+    publicPath: "/app/react18/",
   },
   cache: {
     type: "filesystem",

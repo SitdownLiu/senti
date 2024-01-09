@@ -8,6 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class HeaderLogoComponent implements OnInit {
   @Input() shrink = false;
 
+  logoPath = 'assets/logo.svg'
+
   constructor() {}
 
   ngOnInit(): void {}

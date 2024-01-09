@@ -13,7 +13,7 @@ import { AddOrUpdateRoleDto, DeleteRoleDto, ResRoleDto } from './dtos/role.dto';
 import { AddApplicationDto } from './dtos/application.dto';
 
 @ApiTags('基础服务')
-@ApiHeader({ name: 'senti_token', description: 'accessToken' })
+@ApiHeader({ name: 'sentitoken', description: 'accessToken' })
 @Controller('base')
 export class BaseController {
   constructor(private readonly baseService: BaseService) {}

@@ -12,7 +12,7 @@ import {
 import { Roles } from 'src/common/common.decorator';
 
 @ApiTags('模型管理')
-@ApiHeader({ name: 'senti_token', description: 'accessToken' })
+@ApiHeader({ name: 'sentitoken', description: 'accessToken' })
 @Controller('schemas')
 export class SchemasController {
   constructor(private readonly schemasService: SchemasService) {}
