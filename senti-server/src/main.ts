@@ -11,12 +11,13 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   //cors跨域
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  });
+  app.enableCors();
+  // app.enableCors({
+  //   origin: '*',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   preflightContinue: false,
+  //   optionsSuccessStatus: 204,
+  // });
   //静态资源目录
   app.useStaticAssets(join(__dirname, '..', process.env.STATIC || 'public'));
   //API文档

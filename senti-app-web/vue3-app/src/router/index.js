@@ -12,6 +12,11 @@ const routes = [
     name: 'formRender',
     component: () => import('../views/FormRender'),
   },
+  {
+    path: '/dmnDesigner',
+    name: 'dmnDesigner',
+    component: () => import('../views/DmnDesigner'),
+  },
 ];
 
 export default routes;
