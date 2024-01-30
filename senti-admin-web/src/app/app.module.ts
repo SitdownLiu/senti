@@ -14,7 +14,7 @@ import { FormSchemaModule } from './pages/schemas/form-schema/form-schema.module
 
 //`TODO:` token
 export function tokenGetter() {
-  return localStorage.getItem('sentitoken');
+  return localStorage.getItem('SENTI_TOKEN');
 }
 
 class I18NLoader implements TranslateLoader {

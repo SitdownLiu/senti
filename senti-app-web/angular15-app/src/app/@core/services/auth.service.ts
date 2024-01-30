@@ -59,7 +59,7 @@ export class AuthService {
 
   //是否登录
   isUserLoggedIn() {
-    const token = localStorage.getItem('sentitoken');
+    const token = localStorage.getItem('SENTI_TOKEN');
     if (!isEmpty(token)) {
       return true;
     } else {
