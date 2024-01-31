@@ -1,251 +1,255 @@
-<div class="da-list-wrap">
-  <da-layout-row [daGutter]="[24, 0]">
-    <da-col-item [daSpan]="24" [daXs]="24">
-      <div class="da-list-container" dLoading [loading]="busy">
-        <div class="da-list-content">
-          <d-data-table
-            #dataTable
-            [dataSource]="listData"
-            [scrollable]="true"
-            [tableWidthConfig]="tableWidthConfig"
-          >
-            <thead dTableHead>
-              <tr dTableRow>
-                <th dHeadCell>{{ 'page.formSchema.columns.id' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.name' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.type' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.appType' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.formEngineType' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.formUrl' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.actions' | translate }}</th>
-                <th dHeadCell>{{ 'page.formSchema.columns.operate' | translate }}</th>
+<d-row [dGutter]="[12, 12]" dLoading [loading]="busy">
+  <d-col [dSpan]="24">
+    <d-card class="card-container">
+      <d-card-title> 表单管理 </d-card-title>
+    </d-card>
+  </d-col>
+  <d-col [dSpan]="24">
+    <d-card class="card-container">
+      <d-card-header></d-card-header>
+      <d-card-content>
+        <d-data-table
+          #dataTable
+          [dataSource]="listData"
+          [scrollable]="true"
+          [tableWidthConfig]="tableWidthConfig"
+        >
+          <thead dTableHead>
+            <tr dTableRow>
+              <th dHeadCell>{{ 'page.formSchema.columns.id' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.name' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.type' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.appType' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.formEngineType' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.formUrl' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.actions' | translate }}</th>
+              <th dHeadCell>{{ 'page.formSchema.columns.operate' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody dTableBody>
+            <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+              <tr dTableRow *ngIf="rowIndex === 0">
+                <td dTableCell [attr.colspan]="tableWidthConfig.length">
+                  <div *ngIf="!headerNewForm" (click)="newRow()" class="cursor-pointer">
+                    <span class="icon icon-add"></span>
+                    <span style="margin-left: 10px">
+                      {{ 'page.formSchema.add' | translate }}
+                    </span>
+                  </div>
+                  <div *ngIf="headerNewForm" class="edit-padding-fix">
+                    <da-admin-form
+                      [formConfig]="formConfig"
+                      [formData]="formData"
+                      class="editable-row"
+                      (submitted)="quickRowAdded($event)"
+                      (canceled)="quickRowCancel()"
+                    ></da-admin-form>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody dTableBody>
-              <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
-                <tr dTableRow *ngIf="rowIndex === 0">
-                  <td dTableCell [attr.colspan]="tableWidthConfig.length">
-                    <div *ngIf="!headerNewForm" (click)="newRow()" class="cursor-pointer">
-                      <span class="icon icon-add"></span>
-                      <span style="margin-left: 10px">
-                        {{ 'page.formSchema.add' | translate }}
-                      </span>
-                    </div>
-                    <div *ngIf="headerNewForm" class="edit-padding-fix">
-                      <da-admin-form
-                        [formConfig]="formConfig"
-                        [formData]="formData"
-                        class="editable-row"
-                        (submitted)="quickRowAdded($event)"
-                        (canceled)="quickRowCancel()"
-                      ></da-admin-form>
-                    </div>
-                  </td>
-                </tr>
-                <tr dTableRow>
-                  <!-- id -->
-                  <td
-                    dTableCell
-                    [editable]="false"
-                    [editableTip]="editableTip"
-                    [rowItem]="rowItem"
-                    [field]="'id'"
+              <tr dTableRow>
+                <!-- id -->
+                <td
+                  dTableCell
+                  [editable]="false"
+                  [editableTip]="editableTip"
+                  [rowItem]="rowItem"
+                  [field]="'id'"
+                >
+                  <span>{{ rowItem?.id }}</span>
+                </td>
+                <!-- 表单名称 -->
+                <td
+                  dTableCell
+                  [editable]="true"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem['nameEdit']"
+                  [rowItem]="rowItem"
+                  [field]="'name'"
+                  [beforeEditStart]="beforeEditStart"
+                  [beforeEditEnd]="beforeEditEnd"
+                >
+                  <span *ngIf="!rowItem['nameEdit']">
+                    {{ rowItem?.name }}
+                  </span>
+                  <div *ngIf="rowItem['nameEdit']" class="edit-padding-fix">
+                    <input
+                      class="devui-form-control"
+                      name="name"
+                      [(ngModel)]="rowItem.name"
+                      [attr.maxlength]="100"
+                      [attr.minlength]="3"
+                    />
+                  </div>
+                </td>
+                <!-- 表单类型 -->
+                <td
+                  dTableCell
+                  [editable]="true"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem['typeEdit']"
+                  [rowItem]="rowItem"
+                  [field]="'type'"
+                  [beforeEditStart]="beforeEditStart"
+                  [beforeEditEnd]="beforeEditEnd"
+                >
+                  <span *ngIf="!rowItem['typeEdit']">
+                    <d-tag
+                      [(checked)]="rowItem.type"
+                      [tag]="rowItem?.type | formSchema : 'type'"
+                      [labelStyle]="rowItem?.type === 'FormEngine' ? 'aqua-w98' : 'green-w98'"
+                    ></d-tag>
+                  </span>
+                  <div *ngIf="rowItem['typeEdit']" class="edit-padding-fix">
+                    <d-select
+                      [appendToBody]="true"
+                      [filterKey]="'name'"
+                      [valueKey]="'value'"
+                      [options]="options.formType"
+                      [name]="'type'"
+                      [(ngModel)]="rowItem.type"
+                    ></d-select>
+                  </div>
+                </td>
+                <!-- 应用类型 -->
+                <td
+                  dTableCell
+                  [editable]="true"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem['appTypeEdit']"
+                  [rowItem]="rowItem"
+                  [field]="'appType'"
+                  [beforeEditStart]="beforeEditStart"
+                  [beforeEditEnd]="beforeEditEnd"
+                >
+                  <span *ngIf="!rowItem['appTypeEdit']">
+                    <d-tag
+                      [(checked)]="rowItem.appType"
+                      [tag]="rowItem?.appType"
+                      [labelStyle]="
+                        rowItem?.appType === 'vue3'
+                          ? 'olivine-w98'
+                          : rowItem?.appType === 'react18'
+                          ? 'blue-w98'
+                          : 'red-w98'
+                      "
+                    ></d-tag>
+                  </span>
+                  <div *ngIf="rowItem['appTypeEdit']" class="edit-padding-fix">
+                    <d-select
+                      [appendToBody]="true"
+                      [options]="options.appType"
+                      [name]="'appType'"
+                      [(ngModel)]="rowItem.appType"
+                    ></d-select>
+                  </div>
+                </td>
+                <!-- 表单引擎类型 -->
+                <td
+                  dTableCell
+                  [editable]="true"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem['formEngineTypeEdit']"
+                  [rowItem]="rowItem"
+                  [field]="'formEngineType'"
+                  [beforeEditStart]="beforeEditStart"
+                  [beforeEditEnd]="beforeEditEnd"
+                >
+                  <span *ngIf="!rowItem['formEngineTypeEdit']">
+                    <d-tag
+                      *ngIf="rowItem.formEngineType"
+                      [(checked)]="rowItem.formEngineType"
+                      [tag]="rowItem?.formEngineType"
+                    ></d-tag>
+                  </span>
+                  <div *ngIf="rowItem['formEngineTypeEdit']" class="edit-padding-fix">
+                    <d-select
+                      [appendToBody]="true"
+                      [options]="options.formEngineType"
+                      [name]="'fromEngineType'"
+                      [(ngModel)]="rowItem.formEngineType"
+                    ></d-select>
+                  </div>
+                </td>
+                <!-- 表单URL -->
+                <td
+                  dTableCell
+                  [editable]="true"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem['formUrlEdit']"
+                  [rowItem]="rowItem"
+                  [field]="'formUrl'"
+                  [beforeEditStart]="beforeEditStart"
+                  [beforeEditEnd]="beforeEditEnd"
+                >
+                  <span *ngIf="!rowItem['formUrlEdit']">
+                    {{ rowItem.formUrl }}
+                  </span>
+                  <div *ngIf="rowItem['formUrlEdit']" class="edit-padding-fix">
+                    <input dTextInput size="sm" [(ngModel)]="rowItem.formUrl" />
+                  </div>
+                </td>
+                <!-- 配置 -->
+                <td>
+                  <d-button
+                    *ngIf="rowItem.type === 'FormEngine'"
+                    bsStyle="text"
+                    icon="icon-feedback2"
+                    bsSize="sm"
+                    (btnClick)="openFormDesignerDrawer(rowItem.id)"
                   >
-                    <span>{{ rowItem?.id }}</span>
-                  </td>
-                  <!-- 表单名称 -->
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['nameEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'name'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
+                    设计
+                  </d-button>
+                  <d-button
+                    bsStyle="text"
+                    icon="icon-code"
+                    bsSize="sm"
+                    (btnClick)="openFormTestDataConfig(rowItem.id)"
                   >
-                    <span *ngIf="!rowItem['nameEdit']">
-                      {{ rowItem?.name }}
-                    </span>
-                    <div *ngIf="rowItem['nameEdit']" class="edit-padding-fix">
-                      <input
-                        class="devui-form-control"
-                        name="name"
-                        [(ngModel)]="rowItem.name"
-                        [attr.maxlength]="100"
-                        [attr.minlength]="3"
-                      />
-                    </div>
-                  </td>
-                  <!-- 表单类型 -->
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['typeEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'type'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
+                    数据
+                  </d-button>
+                </td>
+                <!-- 操作 -->
+                <td>
+                  <d-button
+                    icon="icon-trigger"
+                    bsStyle="text"
+                    bsSize="sm"
+                    title="预览"
+                    (click)="openFormRenderDrawer(rowItem.id)"
                   >
-                    <span *ngIf="!rowItem['typeEdit']">
-                      <d-tag
-                        [(checked)]="rowItem.type"
-                        [tag]="rowItem?.type | formSchema : 'type'"
-                        [labelStyle]="rowItem?.type === 'FormEngine' ? 'aqua-w98' : 'green-w98'"
-                      ></d-tag>
-                    </span>
-                    <div *ngIf="rowItem['typeEdit']" class="edit-padding-fix">
-                      <d-select
-                        [appendToBody]="true"
-                        [filterKey]="'name'"
-                        [valueKey]="'value'"
-                        [options]="options.formType"
-                        [name]="'type'"
-                        [(ngModel)]="rowItem.type"
-                      ></d-select>
-                    </div>
-                  </td>
-                  <!-- 应用类型 -->
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['appTypeEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'appType'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
+                    预览
+                  </d-button>
+                  <d-button
+                    icon="icon-delete"
+                    bsStyle="text"
+                    bsSize="sm"
+                    title="删除"
+                    (click)="deleteRow(rowItem, rowIndex)"
                   >
-                    <span *ngIf="!rowItem['appTypeEdit']">
-                      <d-tag
-                        [(checked)]="rowItem.appType"
-                        [tag]="rowItem?.appType"
-                        [labelStyle]="
-                          rowItem?.appType === 'vue3'
-                            ? 'olivine-w98'
-                            : rowItem?.appType === 'react18'
-                            ? 'blue-w98'
-                            : 'red-w98'
-                        "
-                      ></d-tag>
-                    </span>
-                    <div *ngIf="rowItem['appTypeEdit']" class="edit-padding-fix">
-                      <d-select
-                        [appendToBody]="true"
-                        [options]="options.appType"
-                        [name]="'appType'"
-                        [(ngModel)]="rowItem.appType"
-                      ></d-select>
-                    </div>
-                  </td>
-                  <!-- 表单引擎类型 -->
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['formEngineTypeEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'formEngineType'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
-                  >
-                    <span *ngIf="!rowItem['formEngineTypeEdit']">
-                      <d-tag
-                        *ngIf="rowItem.formEngineType"
-                        [(checked)]="rowItem.formEngineType"
-                        [tag]="rowItem?.formEngineType"
-                      ></d-tag>
-                    </span>
-                    <div *ngIf="rowItem['formEngineTypeEdit']" class="edit-padding-fix">
-                      <d-select
-                        [appendToBody]="true"
-                        [options]="options.formEngineType"
-                        [name]="'fromEngineType'"
-                        [(ngModel)]="rowItem.formEngineType"
-                      ></d-select>
-                    </div>
-                  </td>
-                  <!-- 表单URL -->
-                  <td
-                    dTableCell
-                    [editable]="true"
-                    [editableTip]="editableTip"
-                    [(editing)]="rowItem['formUrlEdit']"
-                    [rowItem]="rowItem"
-                    [field]="'formUrl'"
-                    [beforeEditStart]="beforeEditStart"
-                    [beforeEditEnd]="beforeEditEnd"
-                  >
-                    <span *ngIf="!rowItem['formUrlEdit']">
-                      {{ rowItem.formUrl }}
-                    </span>
-                    <div *ngIf="rowItem['formUrlEdit']" class="edit-padding-fix">
-                      <input dTextInput size="sm" [(ngModel)]="rowItem.formUrl" />
-                    </div>
-                  </td>
-                  <!-- 配置 -->
-                  <td>
-                    <d-button
-                      *ngIf="rowItem.type === 'FormEngine'"
-                      bsStyle="text"
-                      icon="icon-feedback2"
-                      bsSize="sm"
-                      (btnClick)="openFormDesignerDrawer(rowItem.id)"
-                    >
-                      设计
-                    </d-button>
-                    <d-button
-                      bsStyle="text"
-                      icon="icon-code"
-                      bsSize="sm"
-                      (btnClick)="openFormTestDataConfig(rowItem.id)"
-                    >
-                      数据
-                    </d-button>
-                  </td>
-                  <!-- 操作 -->
-                  <td>
-                    <d-button
-                      icon="icon-trigger"
-                      bsStyle="text"
-                      bsSize="sm"
-                      title="预览"
-                      (click)="openFormRenderDrawer(rowItem.id)"
-                    >
-                      预览
-                    </d-button>
-                    <d-button
-                      icon="icon-delete"
-                      bsStyle="text"
-                      bsSize="sm"
-                      title="删除"
-                      (click)="deleteRow(rowItem, rowIndex)"
-                    >
-                      删除
-                    </d-button>
-                  </td>
-                </tr>
-              </ng-template>
-            </tbody>
-          </d-data-table>
-        </div>
-        <div class="da-list-footer">
-          <d-pagination
-            [size]="'sm'"
-            [total]="pager.total"
-            [(pageSize)]="pager.pageSize"
-            [(pageIndex)]="pager.pageIndex"
-            [canViewTotal]="true"
-            [canChangePageSize]="true"
-            [canJumpPage]="true"
-            [maxItems]="10"
-            (pageIndexChange)="onPageChange($event)"
-            (pageSizeChange)="onSizeChange($event)"
-          >
-          </d-pagination>
-        </div>
-      </div>
-    </da-col-item>
-  </da-layout-row>
-</div>
+                    删除
+                  </d-button>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </d-data-table>
+      </d-card-content>
+      <d-card-actions [align]="'end'">
+        <d-pagination
+          [size]="'sm'"
+          [total]="pager.total"
+          [(pageSize)]="pager.pageSize"
+          [(pageIndex)]="pager.pageIndex"
+          [canViewTotal]="true"
+          [canChangePageSize]="true"
+          [canJumpPage]="true"
+          [maxItems]="10"
+          (pageIndexChange)="onPageChange($event)"
+          (pageSizeChange)="onSizeChange($event)"
+        >
+        </d-pagination>
+      </d-card-actions>
+    </d-card>
+  </d-col>
+</d-row>

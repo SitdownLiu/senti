@@ -1,55 +1,17 @@
 @import 'ng-devui/styles-var/devui-var.scss';
-@import 'src/app/@shared/styles/common.scss';
+@import 'ng-devui/devui-layout.css';
 
-.da-list-wrap {
-  .da-list-container {
-    padding: 16px;
-    background-color: $devui-base-bg;
-    border-radius: $devui-border-radius-card;
-    box-shadow: $devui-shadow-length-base $devui-light-shadow;
-    min-width: 80%;
+.layout-wrapper {
+  box-shadow: $devui-shadow-length-base $devui-light-shadow;
+  margin-top: 36px;
 
-    .da-list-header {
-      .da-header-item {
-        display: inline-flex;
-        align-items: center;
-        margin-right: 12px;
-        margin-bottom: 12px;
-      }
-    }
-
-    .da-list-content {
-      margin-top: 12px;
-      min-height: 200px;
-    }
-
-    .da-list-footer {
-      text-align: right;
-      margin-top: 12px;
-      display: flex;
-      justify-content: flex-end;
-    }
+  &:first-child {
+    margin-top: 0;
   }
+}
 
-  .Done {
-    color: $devui-success;
-    font-weight: 600;
-  }
-
-  .Working {
-    color: $devui-warning;
-    font-weight: 600;
-  }
-
-  .Stuck {
-    color: $devui-danger;
-    font-weight: 600;
-  }
-
-  .over-flow-ellipsis {
-    display: inline-block;
-    width: 100%;
-  }
+.card-container {
+  background-color: $devui-base-bg;
 }
 
 .input-block {
