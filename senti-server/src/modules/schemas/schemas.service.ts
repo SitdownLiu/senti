@@ -81,7 +81,7 @@ export class SchemasService {
     try {
       let ret = await this.formSchema.findOne({ where: { id } });
       ret.deleteAt = new Date();
-      this.formSchema.save(ret);
+      await this.formSchema.save(ret);
 
       return id;
     } catch (error) {
@@ -97,7 +97,6 @@ export class SchemasService {
       this.formSchema.save(ret);
       return id;
     } catch (error) {
-      console.log(error);
       throw new NotFoundException(`不存在的id: ${id}`);
     }
   }
@@ -135,6 +134,7 @@ export class SchemasService {
         'list.type',
         'list.listUrl',
         'list.ormappingId',
+        'list.tableName',
         'list.create_at',
         'list.update_at',
       ])
@@ -166,7 +166,7 @@ export class SchemasService {
     try {
       let ret = await this.listSchema.findOne({ where: { id } });
       ret.deleteAt = new Date();
-      this.listSchema.save(ret);
+      await this.listSchema.save(ret);
 
       return id;
     } catch (error) {

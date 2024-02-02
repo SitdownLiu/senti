@@ -89,7 +89,6 @@ export class PatchListSchemaListDto {
     enum: ListTypeEnum,
     description: '列表类型：ListEngine-列表引擎，ListUrl-用户自定义',
   })
-  @IsEnum(ListTypeEnum)
   type: string;
 
   @ApiProperty({

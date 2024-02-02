@@ -22,15 +22,12 @@ import { ToolService } from './../../../@core/services/tool.service';
   styleUrls: ['./form-schema.component.scss'],
 })
 export class FormSchemaComponent implements OnInit {
-  editableTip = EditableTip.btn;
-  nameEditing: boolean;
   busy: LoadingType;
   pager = {
     total: 0,
     pageIndex: 1,
     pageSize: 10,
   };
-  listData = [];
   headerNewForm = false;
 
   // 下拉选项
@@ -92,6 +89,8 @@ export class FormSchemaComponent implements OnInit {
   };
 
   // 列表配置
+  editableTip = EditableTip.btn;
+  nameEditing: boolean;
   tableWidthConfig: TableWidthConfig[] = [
     {
       field: 'id',
@@ -126,6 +125,7 @@ export class FormSchemaComponent implements OnInit {
       width: '120px',
     },
   ];
+  listData = [];
 
   // “设计”弹框
   formDesignerDrawer: IDrawerOpenResult;

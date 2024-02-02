@@ -12,8 +12,10 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 
 // 表单组件
-import VForm3 from 'vform3-builds';
-import 'vform3-builds/dist/designer.style.css';
+// import VForm3 from 'vform3-builds';
+// import 'vform3-builds/dist/designer.style.css';
+import VForm3 from '@/assets/v-form3-pro/designer.umd';
+import '@/assets/v-form3-pro/designer.style.css';
 import formCreate from '@form-create/element-ui';
 import FcDesigner from '@form-create/designer';
 
