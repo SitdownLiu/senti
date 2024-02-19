@@ -31,6 +31,12 @@ export class ListSchema extends BaseColumnEntity {
   @Column({ type: 'json', comment: '事件配置（列表类型为[ListEngine]）' })
   eventConfig: string;
 
+  @Column({ type: 'json', comment: '按钮配置（列表类型为[ListEngine]）' })
+  buttonConfig: string;
+
+  @Column({ type: 'json', comment: '全局配置（列表类型为[ListEngine]）' })
+  globalConfig: string;
+
   @Column({ length: 32, comment: 'OR映射id' })
   ormappingId: string;
 }

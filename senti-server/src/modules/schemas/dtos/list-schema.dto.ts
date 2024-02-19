@@ -51,6 +51,12 @@ export class ListSchemaInfoDto {
 
   @ApiProperty({ required: false, description: '事件配置（列表类型为[ListEngine]）' })
   eventConfig: object;
+
+  @ApiProperty({ required: false, description: '按钮配置（列表类型为[ListEngine]）' })
+  buttonConfig: object;
+
+  @ApiProperty({ required: false, description: '全局配置（列表类型为[ListEngine]）' })
+  globalConfig: object;
 }
 
 // 动态模型 -分页查询参数
@@ -120,4 +126,10 @@ export class PatchListSchemaConfigDto {
 
   @ApiProperty({ required: false, description: '事件配置（列表类型为[ListEngine]）' })
   eventConfig: object;
+
+  @ApiProperty({ required: false, description: '按钮配置（列表类型为[ListEngine]）' })
+  buttonConfig: object;
+
+  @ApiProperty({ required: false, description: '全局配置（列表类型为[ListEngine]）' })
+  golobalConfig: object;
 }

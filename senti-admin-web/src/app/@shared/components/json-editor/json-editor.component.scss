@@ -1,5 +1,12 @@
 @import 'ng-devui/styles-var/devui-var.scss';
 
 .json-editor {
-  width: 560px;
+  width: 100%;
+  height: 100vh;
+
+  .json-edit-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
 }

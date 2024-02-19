@@ -15,12 +15,14 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ES5",
+    "module": "CommonJS",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "useDefineForClassFields": false,
     "lib": [
-      "ES2022",
-      "dom"
+      "DOM",
+      "ES2018"
     ]
   },
   "angularCompilerOptions": {

@@ -1,7 +1,21 @@
-<div class="json-editor">
-  <ngx-codemirror
-    [(ngModel)]="content"
-    [options]="config"
-    (cursorActivity)="codeChange(content,data)"
-  ></ngx-codemirror>
-</div>
+<d-card class="json-editor">
+  <d-card-header class="json-edit-header">
+    <d-card-title> 设置数据模型 </d-card-title>
+  </d-card-header>
+  <d-card-content class="json-edit-content">
+    <div dLoading [loading]="busy">
+      <ngx-codemirror
+        id="ngx-codemirror"
+        [(ngModel)]="content"
+        [options]="config"
+        (cursorActivity)="codeChange(content)"
+      ></ngx-codemirror>
+    </div>
+  </d-card-content>
+  <d-card-actions>
+    <div class="json-edit-footer">
+      <d-button bsStyle="primary" dLoading [loading]="busy" (btnClick)="onSubmit()">提交</d-button>
+      <d-button bsStyle="common" style="margin-left: 8px" (btnClick)="close()">关闭</d-button>
+    </div>
+  </d-card-actions>
+</d-card>

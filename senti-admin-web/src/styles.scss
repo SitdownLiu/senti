@@ -3,6 +3,16 @@
 @import 'codemirror/theme/duotone-light';
 @import 'codemirror/theme/material';
 
+#ngx-codemirror {
+  .CodeMirror {
+    font-family: monospace;
+    font-size: 16px;
+    width: 100%;
+    direction: ltr;
+    height: calc(100vh - 64px - 21px - 28px);
+  }
+}
+
 html,
 body {
   height: 100%;

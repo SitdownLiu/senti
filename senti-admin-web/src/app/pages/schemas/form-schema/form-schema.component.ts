@@ -320,63 +320,64 @@ export class FormSchemaComponent implements OnInit {
 
   // --------------- 测试数据配置 -----------------//
   activeFormId: string; //当前激活的表单id
-
   // 打开“测试数据”配置界面
   openFormTestDataConfig = (formId) => {
-    this.formSchemaService.queryDetail(formId).then((res) => {
-      const { dataSchema } = res;
-      const formDataSchemaDialog = this.dialogService.open({
-        dialogtype: 'info',
-        showAnimation: true,
-        title: '数据模型配置（Data Schema Config）',
-        maxHeight: '600px',
-        width: '600px',
-        zIndex: 1000,
-        backdropCloseable: true,
-        content: JsonEditorComponent,
-        data: {
-          content: dataSchema,
+    const formDataSchemaDialog = this.drawerService.open({
+      drawerContentComponent: JsonEditorComponent,
+      width: '600px',
+      zIndex: 1000,
+      isCover: true,
+      fullScreen: true,
+      backdropCloseable: true,
+      escKeyCloseable: true,
+      position: 'right',
+      showAnimation: true,
+      data: {
+        formId,
+        close: (event) => {
+          formDataSchemaDialog.drawerInstance.hide();
+          this.getList();
         },
-        buttons: [
-          {
-            cssClass: 'primary',
-            text: '保存',
-            disabled: false,
-            handler: ($event: Event) => {
-              try {
-                const dataSchema = JSON.parse(formDataSchemaDialog.modalContentInstance.handlerContent);
-                this.formSchemaService
-                  .patchConfig(formId, {
-                    dataSchema: formDataSchemaDialog.modalContentInstance.handlerContent,
-                  })
-                  .then((res) => {
-                    this.toolService.openModal({
-                      type: 'success',
-                      title: '操作成功',
-                      content: `ID[${formId}]的表单数据模型配置已保存。`,
-                    });
-                    formDataSchemaDialog.modalInstance.hide();
-                  })
-                  .finally(() => {});
-              } catch (error) {
-                this.toolService.openModal({
-                  type: 'failed',
-                  title: '类型错误',
-                  content: '不是有效的JSON格式。',
-                });
-              }
-            },
-          },
-          {
-            id: 'btn-cancel',
-            cssClass: 'common',
-            text: '关闭',
-            handler: ($event: Event) => {
-              formDataSchemaDialog.modalInstance.hide();
-            },
-          },
-        ],
-      });
+      },
+      // buttons: [
+      //   {
+      //     cssClass: 'primary',
+      //     text: '保存',
+      //     disabled: false,
+      //     handler: ($event: Event) => {
+      //       try {
+      //         const dataSchema = JSON.parse(formDataSchemaDialog.modalContentInstance.handlerContent);
+      //         this.formSchemaService
+      //           .patchConfig(formId, {
+      //             dataSchema: formDataSchemaDialog.modalContentInstance.handlerContent,
+      //           })
+      //           .then((res) => {
+      //             this.toolService.openModal({
+      //               type: 'success',
+      //               title: '操作成功',
+      //               content: `ID[${formId}]的表单数据模型配置已保存。`,
+      //             });
+      //             formDataSchemaDialog.modalInstance.hide();
+      //           })
+      //           .finally(() => {});
+      //       } catch (error) {
+      //         this.toolService.openModal({
+      //           type: 'failed',
+      //           title: '类型错误',
+      //           content: '不是有效的JSON格式。',
+      //         });
+      //       }
+      //     },
+      //   },
+      //   {
+      //     id: 'btn-cancel',
+      //     cssClass: 'common',
+      //     text: '关闭',
+      //     handler: ($event: Event) => {
+      //       formDataSchemaDialog.modalInstance.hide();
+      //     },
+      //   },
+      // ],
     });
   };
 }
