@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  baseUrl: '/api',
+  baseUrl: 'http://39.108.54.115:50040/api',
   timeOutBackUrl: '/login',
   // angular15AppUrl: 'http://localhost:34210/',
   vue3AppUrl: 'http://localhost:34211/',

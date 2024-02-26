@@ -36,7 +36,6 @@ const setFormSchema = async () => {
 // 加载表单数据
 const setFormData = async (data) => {
   formData.value = data;
-  
 };
 
 // 获取表单数据
@@ -44,7 +43,10 @@ const getFormData = () => {
   emit('onFormData', JSON.parse(JSON.stringify(formData.value)));
 };
 
-defineExpose({ setFormData, getFormData });
+// 进入预览模式
+const previewMode = () => {};
+
+defineExpose({ setFormData, getFormData, previewMode });
 </script>
 
 <style lang="scss" scoped></style>

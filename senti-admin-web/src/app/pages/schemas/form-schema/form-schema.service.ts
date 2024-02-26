@@ -5,7 +5,7 @@ export interface ListPager {
   pageSize: number;
   pageIndex: number;
   name?: string;
-  type?: 'FormEngine' | 'FormUrl';
+  type?: string;
   formEngineType?: string;
 }
 

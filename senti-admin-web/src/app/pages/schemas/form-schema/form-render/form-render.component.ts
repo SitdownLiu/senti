@@ -42,17 +42,17 @@ export class FormRenderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.sentiApp = document.querySelector('micro-app-senti-app[name=senti-app]');
+    this.sentiApp = document.getElementById('senti-app-formrender');
 
     // 查询表单详情
     this.queryFormSchemaDetail();
-    // 监听：senti-app的消息
-    microApp.addDataListener('senti-app', (data) => this.onSentiaAppData(data));
+    // 监听：senti-app-formrender的消息
+    microApp.addDataListener('senti-app-formrender', (data) => this.onSentiaAppData(data));
   }
 
   ngOnDestroy(): void {
     // 清空所有监听指定子应用的函数
-    microApp.clearDataListener('senti-app');
+    microApp.clearDataListener('senti-app-formrender');
   }
 
   // 查询表单详情
@@ -100,12 +100,12 @@ export class FormRenderComponent implements OnInit, OnDestroy {
   loadSentiApp(sentiApp, url, path) {
     sentiApp.setAttribute('url', url);
     sentiApp.setAttribute('default-page', path);
-    microApp.reload('senti-app');
+    microApp.reload('senti-app-formrender');
   }
 
-  // 监听：senti-app的消息
+  // 监听：senti-app-formrender的消息
   onSentiaAppData(data) {
-    console.log('senti-app:', data);
+    console.log('senti-app-formrender:', data);
     const { type, name } = data;
     // 处理事件：event
     if (type === 'event') {
@@ -117,15 +117,15 @@ export class FormRenderComponent implements OnInit, OnDestroy {
       if (name === 'formData') this.onSentiAppFormData(data);
     }
 
-    // senti-app完成卸载时
+    // senti-app-formrender完成卸载时
   }
 
-  // 监听：senti-app完成渲染时
+  // 监听：senti-app-formrender完成渲染时
   sentiAppMounted(data: any) {
     console.log(data);
     this.loadingType = false;
     // 发送formId
-    microApp.setData('senti-app', {
+    microApp.setData('senti-app-formrender', {
       type: 'message',
       name: 'formSchema',
       value: {
@@ -135,7 +135,7 @@ export class FormRenderComponent implements OnInit, OnDestroy {
     });
   }
 
-  // 监听：senti-app发送的formData
+  // 监听：senti-app-formrender发送的formData
   onSentiAppFormData(data) {
     this.loadingType = false;
     const { value } = data;
@@ -145,7 +145,7 @@ export class FormRenderComponent implements OnInit, OnDestroy {
   // 提交数据
   submit() {
     this.loadingType = true;
-    microApp.forceSetData('senti-app', { type: 'event', name: 'submit' });
+    microApp.forceSetData('senti-app-formrender', { type: 'event', name: 'submit' });
   }
 
   // 加载测试数据
@@ -175,7 +175,7 @@ export class FormRenderComponent implements OnInit, OnDestroy {
           handler: ($event: Event) => {
             try {
               const data = JSON.parse(formDataSchemaDialog.modalContentInstance.handlerContent);
-              microApp.forceSetData('senti-app', {
+              microApp.forceSetData('senti-app-formrender', {
                 type: 'message',
                 name: 'formData',
                 value: { formId: this.formId, formData: data },

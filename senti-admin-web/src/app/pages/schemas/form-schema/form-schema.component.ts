@@ -23,10 +23,15 @@ import { ToolService } from './../../../@core/services/tool.service';
 })
 export class FormSchemaComponent implements OnInit {
   busy: LoadingType;
+
+  // 查询条件
+  layoutDirection: FormLayout = FormLayout.Horizontal;
   pager = {
     total: 0,
     pageIndex: 1,
     pageSize: 10,
+    name: '',
+    type: '',
   };
   headerNewForm = false;
 
@@ -164,6 +169,18 @@ export class FormSchemaComponent implements OnInit {
       this.listData = res.list;
       this.pager.total = res.total;
     });
+  }
+
+  // 重置
+  reset() {
+    this.pager = {
+      total: 0,
+      pageIndex: 1,
+      pageSize: 10,
+      name: '',
+      type: '',
+    };
+    this.getList();
   }
 
   // 激活编辑框

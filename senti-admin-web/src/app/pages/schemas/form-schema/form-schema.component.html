@@ -1,7 +1,64 @@
 <d-row [dGutter]="[12, 12]" dLoading [loading]="busy">
   <d-col [dSpan]="24">
     <d-card class="card-container">
-      <d-card-title> 表单管理 </d-card-title>
+      <d-card-header>
+        <d-card-title> 表单管理 </d-card-title>
+      </d-card-header>
+      <form dForm [layout]="layoutDirection" [labelAlign]="'end'" [labelSize]="'sm'">
+        <d-row [dGutter]="[12, 12]">
+          <d-col [dSpan]="6">
+            <input
+              style="width: 100%"
+              dTextInput
+              name="name"
+              [(ngModel)]="pager.name"
+              placeholder="搜索表单名称"
+            />
+            <!-- <d-form-item>
+              <d-form-label> 表单名称： </d-form-label>
+              <d-form-control>
+                <input
+                  style="width: 260px"
+                  dTextInput
+                  name="name"
+                  [(ngModel)]="pager.name"
+                  placeholder="搜索表单名称"
+                />
+              </d-form-control>
+            </d-form-item> -->
+          </d-col>
+          <d-col [dSpan]="3">
+            <d-select
+              [appendToBody]="true"
+              [filterKey]="'name'"
+              [valueKey]="'value'"
+              [options]="options.formType"
+              [name]="'type'"
+              [(ngModel)]="pager.type"
+              placeholder="表单类型"
+            ></d-select>
+            <!-- <d-form-item>
+              <d-form-label> 表单类型： </d-form-label>
+              <d-form-control>
+                <d-select
+                  [appendToBody]="true"
+                  [filterKey]="'name'"
+                  [valueKey]="'value'"
+                  [options]="options.formType"
+                  [name]="'type'"
+                  [(ngModel)]="pager.type"
+                  placeholder="表单类型"
+                ></d-select>
+              </d-form-control>
+            </d-form-item> -->
+          </d-col>
+          <d-col [dSpan]="6" style="display: flex; align-items: center">
+            <d-button bsStle="primary" (btnClick)="getList()"> 查询 </d-button>
+            <d-button bsStyle="common" style="margin-left: 8px" (btnClick)="reset()"> 重置 </d-button>
+          </d-col>
+        </d-row>
+      </form>
+      <d-card-content> </d-card-content>
     </d-card>
   </d-col>
   <d-col [dSpan]="24">

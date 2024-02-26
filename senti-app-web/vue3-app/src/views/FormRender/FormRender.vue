@@ -45,11 +45,14 @@ onUnmounted(() => {
 
 // 监听：主应用的消息
 const onMainAppData = (data) => {
-  console.log(data);
+  console.log('base-admin: ', data);
   const { type, name } = data;
   // 处理事件：event
   if (type === 'event') {
+    // 提交表单
     if (name === 'submit') getFormData();
+    // 预览模式
+    if (name === 'preview') previewMode();
   }
 
   // 处理消息:message
@@ -80,6 +83,12 @@ const setFormData = async (data) => {
 const getFormData = () => {
   if (formEngineName.value === 'vform3') vform3.value.getFormData();
   if (formEngineName.value === 'formcreate') formcreate.value.getFormData();
+};
+
+// 进入预览模式
+const previewMode = () => {
+  if (formEngineName.value === 'vform3') vform3.value.previewMode();
+  if (formEngineName.value === 'formcreate') formcreate.value.previewMode();
 };
 
 // 发送：表单准备完成

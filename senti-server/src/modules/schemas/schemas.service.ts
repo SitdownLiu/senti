@@ -35,9 +35,9 @@ export class SchemasService {
 
   // 分页查询表单模型
   async pageFormSchema(query): Promise<any> {
-    const { pageNum, pageSize, name, type, formEngineType } = query;
+    const { pageIndex, pageSize, name, type, formEngineType } = query;
     const take = pageSize || 10,
-      skip = (pageNum - 1) * take || 0;
+      skip = (pageIndex - 1) * take || 0;
 
     const qb = this.formSchema
       .createQueryBuilder('form')
@@ -57,7 +57,7 @@ export class SchemasService {
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });
     if (formEngineType) qb.andWhere({ formEngineType });
-    if (pageNum || pageSize) {
+    if (pageIndex || pageSize) {
       await qb.skip(skip).take(take);
       const [list, total] = await qb.getManyAndCount();
 
@@ -122,9 +122,9 @@ export class SchemasService {
 
   // 分页查询动态列表模型
   async pageListSchema(query): Promise<any> {
-    const { pageNum, pageSize, name, type } = query;
+    const { pageIndex, pageSize, name, type } = query;
     const take = pageSize || 10,
-      skip = (pageNum - 1) * take || 0;
+      skip = (pageIndex - 1) * take || 0;
 
     const qb = this.listSchema
       .createQueryBuilder('list')
@@ -142,7 +142,7 @@ export class SchemasService {
 
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });
-    if (pageNum || pageSize) {
+    if (pageIndex || pageSize) {
       await qb.skip(skip).take(take);
       const [list, total] = await qb.getManyAndCount();
 

@@ -39,7 +39,12 @@ const getFormData = () => {
   });
 };
 
-defineExpose({ setFormData, getFormData });
+// 进入预览模式
+const previewMode = () => {
+  render.value.setReadMode();
+};
+
+defineExpose({ setFormData, getFormData, previewMode });
 </script>
 
 <style lang="scss" scoped></style>
