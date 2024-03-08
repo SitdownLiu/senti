@@ -118,4 +118,11 @@ export class SchemasController {
   patchListSchemaConfig(@Param() param: ListSchemaIdDto, @Body() body: PatchListSchemaConfigDto) {
     return this.schemasService.patchListSchema(param.id, body);
   }
+
+  @ApiOperation({ summary: '创建副本-动态列表模型' })
+  @Roles('admin', 'admin-app')
+  @Post('/listSchema/copy')
+  copyListSchema(@Body() body: ListSchemaIdDto) {
+    return this.schemasService.copyListSchema(body.id);
+  }
 }

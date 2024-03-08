@@ -185,4 +185,16 @@ export class SchemasService {
       throw new NotFoundException(`不存在的id: ${id}`);
     }
   }
+
+  // 创建副本
+  async copyListSchema(id): Promise<any> {
+    try {
+      let ret = await this.listSchema.findOne({ where: { id } });
+      delete ret.id;
+      ret.name = ret.name + ' - 副本';
+      return this.listSchema.save(ret);
+    } catch (error) {
+      throw new NotFoundException(`不存在的id: ${id}`);
+    }
+  }
 }
