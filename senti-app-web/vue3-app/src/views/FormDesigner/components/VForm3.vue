@@ -17,8 +17,11 @@ const emit = defineEmits(['onFormSchema']);
 
 // 表单设计器配置
 const designerConfig = {
-  externalLink: false,
-  resetFormJson: true,
+  logoHeader: false, // 是否显示Logo栏
+  externalLink: false, // 显示github连接
+  resetFormJson: true, // 初始化自动清空内容：如设置为true，则刷新页面时也会清空设计器画布区域，慎用！
+  languageMenu: false, //是否显示语言切换菜单
+  clearDesignerButton: false, //是否显示清空设计器按钮
 };
 
 const designer = ref();

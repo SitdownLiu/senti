@@ -41,7 +41,7 @@ const getFormData = () => {
 
 // 进入预览模式
 const previewMode = () => {
-  render.value.setReadMode();
+  render.value.setReadMode(true);
 };
 
 defineExpose({ setFormData, getFormData, previewMode });

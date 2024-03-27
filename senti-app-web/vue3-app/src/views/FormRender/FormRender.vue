@@ -104,7 +104,5 @@ const sendFormData = (data) => {
 <style lang="scss" scoped>
 .form-render {
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 </style>
