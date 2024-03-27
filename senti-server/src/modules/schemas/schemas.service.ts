@@ -101,6 +101,18 @@ export class SchemasService {
     }
   }
 
+  // 创建副本
+  async copyFormSchema(id): Promise<any> {
+    try {
+      let ret = await this.formSchema.findOne({ where: { id } });
+      delete ret.id;
+      ret.name = ret.name + ' - 副本';
+      return this.formSchema.save(ret);
+    } catch (error) {
+      throw new NotFoundException(`不存在的id: ${id}`);
+    }
+  }
+
   /**
    ** @动态列表模型
    **************************************************************/

@@ -72,6 +72,13 @@ export class SchemasController {
     return this.schemasService.patchFormSchema(param.id, body);
   }
 
+  @ApiOperation({ summary: '创建副本-表单模型' })
+  @Roles('admin', 'admin-app')
+  @Post('/formSchema/copy')
+  copyFormSchema(@Body() body: FormSchemaIdDto) {
+    return this.schemasService.copyFormSchema(body.id);
+  }
+
   /**
    ** @动态列表模型
    **************************************************************/
