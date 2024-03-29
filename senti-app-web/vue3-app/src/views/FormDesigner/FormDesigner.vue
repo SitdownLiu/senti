@@ -39,7 +39,7 @@ onUnmounted(() => {
 
 // 监听：主应用的消息
 const onMainAppData = (data) => {
-  console.log(data);
+  console.log('[vue3-form-designer]main-app：', data);
   const { type } = data;
   // 处理事件：event
   if (type === 'event') {

@@ -18,6 +18,7 @@ import VForm3 from '@/assets/v-form3-pro/designer.umd';
 import '@/assets/v-form3-pro/designer.style.css';
 import formCreate from '@form-create/element-ui';
 import FcDesigner from '@form-create/designer';
+import { loadCustomWidgets } from './components/VForm3Custom/CustomWidgetLoader';
 
 let app = null;
 let router = null;
@@ -34,6 +35,7 @@ window.mount = () => {
   app.use(Antd);
   app.use(ElementPlus);
   app.use(VForm3);
+  loadCustomWidgets(app);
   app.use(formCreate);
   app.use(FcDesigner);
   app.mount('#app');

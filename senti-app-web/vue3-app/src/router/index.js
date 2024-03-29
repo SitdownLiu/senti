@@ -8,6 +8,23 @@ const routes = [
     component: HomeView,
   },
   {
+    path: '/test',
+    name: '测试页',
+    redirect: '/test/formDesigner',
+    children: [
+      {
+        path: 'formDesigner',
+        name: '表单设计',
+        component: () => import('../views/TestPage/formdesigner.vue'),
+      },
+      {
+        path: 'formrender',
+        name: '表单渲染',
+        component: () => import('../views/TestPage/formrender.vue'),
+      },
+    ],
+  },
+  {
     path: '/formDesigner',
     name: 'formDesigner',
     component: () => import('../views/FormDesigner'),

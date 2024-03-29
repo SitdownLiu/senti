@@ -45,7 +45,7 @@ onUnmounted(() => {
 
 // 监听：主应用的消息
 const onMainAppData = (data) => {
-  console.log('base-admin: ', data);
+  console.log('[vue3-form-render]main-app: ', data);
   const { type, name } = data;
   // 处理事件：event
   if (type === 'event') {
