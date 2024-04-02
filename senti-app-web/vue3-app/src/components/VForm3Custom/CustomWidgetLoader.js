@@ -1,6 +1,7 @@
 import zhCustomLang from './lang/zh-CN_custom';
 import enCustomLang from './lang/en-US_custom';
 
+import CustomOptionItemSetting from './PropertyEditor/CustomOptionItemSetting.vue';
 import OnFilePreview from './PropertyEditor/onFilePreview.vue';
 import FileUploadClickWidget from './FieldWidget/FileUploadClickWidget.vue';
 import CascaderLeafWidget from './FieldWidget/CascaderLeafWidget.vue';
@@ -15,14 +16,24 @@ export const loadCustomWidgets = (app) => {
   addZHExtensionLang(zhCustomLang);
   addENExtensionLang(enCustomLang);
 
-  // 加载自定义事件编辑器
+  //加载自定义容器组件
+
+  /** 自定义字段组件：文件(点击) */
+  // 加入组件库
+  addCustomWidgetSchema(FileUploadClickSchema);
+  // 注册事件：文件预览
   PERegister.registerEPEditor(app, 'onFilePreview', 'onFilePreview-editor', OnFilePreview);
 
-  //加载自定义容器
-
-  //加载自定义字段组件
-  addCustomWidgetSchema(FileUploadClickSchema); // 文件(点击)
-  addCustomWidgetSchema(CascaderLeafSchema); // 级联(叶)
+  /** 自定义字段组件：级联(叶) */
+  // 加入组件库
+  addCustomWidgetSchema(CascaderLeafSchema);
+  // 注册高级属性：选项配置
+  // PERegister.registerCPEditor(
+  //   app,
+  //   'cascader-leaf-optionItems',
+  //   'cascader-leaf-option-item-setting',
+  //   CustomOptionItemSetting
+  // );
 
   //在Vue中注册组件
   app.component(FileUploadClickWidget.name, FileUploadClickWidget);

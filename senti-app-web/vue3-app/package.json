@@ -10,6 +10,7 @@
   "dependencies": {
     "@form-create/designer": "^3.1.4",
     "@form-create/element-ui": "^3.1.26",
+    "ace-builds": "^1.4.12",
     "ant-design-vue": "^4.0.7",
     "axios": "^1.6.2",
     "core-js": "^3.8.3",

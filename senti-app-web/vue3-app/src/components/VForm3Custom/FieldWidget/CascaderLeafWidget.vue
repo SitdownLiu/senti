@@ -46,8 +46,9 @@
 
 <script>
 import VForm3 from '@/assets/v-form3-pro/designer.umd';
-const { FormItemWrapper, emitter, fieldMixin, i18n, Utils } = VForm3.VFormSDK;
+const { FormItemWrapper, emitter, i18n, Utils, fieldMixin } = VForm3.VFormSDK;
 import { pcTextArr, pcaTextArr } from 'element-china-area-data';
+const { deepClone, getDSByName, overwriteObj, runDataSourceRequest, translateOptionItems, evalFn } = Utils;
 
 export default {
   name: 'cascader-leaf-widget',
@@ -155,12 +156,64 @@ export default {
       setTimeout(() => {
         document.querySelectorAll('.el-cascader-panel .el-radio').forEach((el) => {
           el.onclick = () => {
-            console.log('test====', 1111);
             this.$refs.fieldEditor.popperVisible = false; // 单选框部分点击隐藏下拉框
           };
         });
       }, 100);
     },
+
+    //--------------------- 重写fieldMixin的方法  ------------------//
+    // 初始化下拉选项
+    async initOptionItems() {
+      if (this.designState) return;
+      // 使用数据源
+      if (!!this.field.options.dsEnabled) {
+        this.field.options.optionItems.splice(0, this.field.options.optionItems.length); // 清空原有选项
+        let curDSName = this.field.options.dsName;
+        let curDSetName = this.field.options.dataSetName;
+        let curDS = getDSByName(this.formConfig, curDSName);
+        if (!!curDS && !curDSetName) {
+          let gDsv = this.getGlobalDsv() || {};
+          //console.log('Global DSV is: ', gDsv)
+          let localDsv = new Object({});
+          overwriteObj(localDsv, gDsv);
+          localDsv['widgetName'] = this.field.options.name;
+          localDsv['widgetKeyName'] = this.fieldKeyName;
+          let dsResult = null;
+          try {
+            dsResult = await runDataSourceRequest(curDS, localDsv, this.getFormRef(), false, this.$message);
+            this.loadOptions(dsResult);
+          } catch (err) {
+            this.$message.error(err.message);
+          }
+        } else if (!!curDS && !!curDSetName && !this.dataSetLoadedFlag) {
+          this.loadOptionItemsFromDataSet(curDSName);
+        }
+      }
+    },
+
+    /**
+     * 加载选项，并清空字段值
+     * @param options
+     */
+    loadOptions(options) {
+      this.field.options.optionItems = deepClone(options);
+      //this.clearSelectedOptions()  //清空已选选项
+    },
+
+    /**
+     * 转译选择项数据
+     * @param rawData
+     * @param widgetType
+     * @param labelKey
+     * @param valueKey
+     * @returns {[]}
+     */
+    translateOptionItems(rawData, widgetType, labelKey, valueKey) {
+      // 级联选择不转译
+      return deepClone(rawData);
+    },
+    //--------------------- 以上为重写fieldMixin的方法 end ------------------//
   },
 };
 </script>
