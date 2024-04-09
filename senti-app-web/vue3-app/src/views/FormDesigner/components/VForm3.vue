@@ -3,7 +3,7 @@
 </template>
 
 <script setup name="VForm3Designer">
-import { onMounted, defineEmits, defineExpose, defineProps, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 // 参数
 const props = defineProps({

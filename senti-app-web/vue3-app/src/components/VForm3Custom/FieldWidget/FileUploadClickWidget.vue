@@ -333,6 +333,81 @@ export default {
         });
       }
     },
+
+    //--------------------- 重写fieldMixin的方法  ------------------//
+    initFieldModel() {
+      if (!this.field.formItemFlag) {
+        return;
+      }
+
+      if (!!this.getObjectFieldFlag() && !this.designState) {
+        //处理对象容器内部组件
+        const objectModel = this.getObjectModel();
+        this.fieldModel = objectModel === undefined ? null : objectModel[this.fieldKeyName];
+        this.oldFieldValue = deepClone(this.fieldModel);
+        this.initFileList(); //处理图片上传、文件上传字段
+
+        return;
+      }
+
+      if (!!this.subFormItemFlag && !this.designState) {
+        //SubForm子表单组件需要特殊处理！！
+        let subFormData = this.formModel[this.subFormName];
+        if (
+          (subFormData === undefined ||
+            subFormData[this.subFormRowIndex] === undefined ||
+            subFormData[this.subFormRowIndex][this.fieldKeyName] === undefined) &&
+          this.field.options.defaultValue !== undefined
+        ) {
+          this.fieldModel = this.field.options.defaultValue;
+          subFormData[this.subFormRowIndex][this.fieldKeyName] = this.field.options.defaultValue;
+        } else if (subFormData[this.subFormRowIndex][this.fieldKeyName] === undefined) {
+          this.fieldModel = null;
+          subFormData[this.subFormRowIndex][this.fieldKeyName] = null;
+        } else {
+          this.fieldModel = subFormData[this.subFormRowIndex][this.fieldKeyName];
+        }
+
+        /* 主动触发子表单内field-widget的onChange事件！！ */
+        setTimeout(() => {
+          //延时触发onChange事件, 便于更新计算字段！！
+          this.handleOnChangeForSubForm(this.fieldModel, this.oldFieldValue, subFormData, this.subFormRowId);
+        }, 800);
+        this.oldFieldValue = deepClone(this.fieldModel);
+
+        this.initFileList(); //处理图片上传、文件上传字段
+
+        return;
+      }
+
+      if (this.formModel[this.fieldKeyName] === undefined && this.field.options.defaultValue !== undefined) {
+        this.fieldModel = this.field.options.defaultValue;
+      } else if (this.formModel[this.fieldKeyName] === undefined) {
+        //如果formModel为空对象，则初始化字段值为null!!
+        this.formModel[this.fieldKeyName] = null;
+      } else {
+        this.fieldModel = this.formModel[this.fieldKeyName];
+      }
+      this.oldFieldValue = deepClone(this.fieldModel);
+      this.initFileList(); //处理图片上传、文件上传字段
+    },
+
+    initFileList() {
+      //初始化上传组件的已上传文件列表
+      if (this.designState === true) {
+        return;
+      }
+
+      if (!!this.fieldModel) {
+        if (Array.isArray(this.fieldModel)) {
+          this.fileList = deepClone(this.fieldModel);
+        } else {
+          this.fileList.splice(0, 0, deepClone(this.fieldModel));
+        }
+      }
+    },
+
+    //--------------------- 以上为重写fieldMixin的方法 end ------------------//
   },
 };
 </script>
