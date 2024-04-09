@@ -13,7 +13,7 @@ const props = defineProps({
   },
 });
 // 事件
-const emit = defineEmits(['onFormSchema']);
+const emit = defineEmits(['onFormSchema', 'onFormOtherConfig']);
 
 // 表单设计器配置
 const designerConfig = {
@@ -37,8 +37,14 @@ const setFormSchema = () => {
 
 // 获取表单设计模型
 const getFormSchema = async () => {
+  // 设计模型
   const schema = await designer.value.getFormJson();
   await emit('onFormSchema', JSON.parse(JSON.stringify(schema)));
+  // 字段配置
+  const fields = await designer.value.getFieldWidgets();
+  // 字段结构
+  const fieldBuild = await designer.value.buildFormDataSchema();
+  await emit('onFormOtherConfig', { fields, fieldBuild });
 };
 
 defineExpose({ setFormSchema, getFormSchema });

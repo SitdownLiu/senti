@@ -4,6 +4,7 @@
     ref="vform3"
     :schema="formSchema"
     @onFormSchema="sendFormSchema"
+    @onFormOtherConfig="sendFormOtherConfig"
   ></v-form3>
   <form-create
     v-if="formEngineName === 'formcreate'"
@@ -70,9 +71,20 @@ const getFormSchema = () => {
 // 发送：表单设计模型
 const sendFormSchema = (schema) => {
   window.microApp.dispatch({
+    _t: new Date().getTime(),
     type: 'message',
     name: 'formSchema',
     value: schema,
+  });
+};
+
+// 发送：表单其他配置
+const sendFormOtherConfig = (config) => {
+  window.microApp.dispatch({
+    _t: new Date().getTime(),
+    type: 'message',
+    name: 'formOtherConfig',
+    value: config,
   });
 };
 </script>

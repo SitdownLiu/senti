@@ -51,4 +51,10 @@ export class FormSchema extends BaseColumnEntity {
 
   @Column({ length: 255, nullable: true, comment: '备注' })
   remark: string;
+
+  @Column({ type: 'json', nullable: true, comment: '其他配置' })
+  otherConfig: string;
+
+  @Column({ default: 800, nullable: true, comment: '表单宽度' })
+  width: number;
 }

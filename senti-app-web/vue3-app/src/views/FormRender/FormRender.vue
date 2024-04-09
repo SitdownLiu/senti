@@ -33,7 +33,7 @@ const formcreate = ref();
 
 onMounted(() => {
   // 通知主应用：渲染完成
-  window.microApp.dispatch({ type: 'event', name: 'mounted' });
+  window.microApp.dispatch({ _t: new Date().getTime(), type: 'event', name: 'mounted' });
   // 监听：主应用的消息
   window.microApp.addDataListener((data) => onMainAppData(data));
 });
@@ -93,11 +93,11 @@ const previewMode = () => {
 
 // 发送：表单准备完成
 const sendPrepared = () => {
-  window.microApp.dispatch({ type: 'event', name: 'prepared' });
+  window.microApp.dispatch({ _t: new Date().getTime(), type: 'event', name: 'prepared' });
 };
 // 发送：表单数据
 const sendFormData = (data) => {
-  window.microApp.dispatch({ type: 'message', name: 'formData', value: data });
+  window.microApp.dispatch({ _t: new Date().getTime(), type: 'message', name: 'formData', value: data });
 };
 </script>
 

@@ -66,6 +66,12 @@ export class FormSchemaInfoDto {
 
   @ApiProperty({ required: false, description: '备注' })
   remark: string;
+
+  @ApiProperty({ required: false, description: '其他配置（JSON）' })
+  otherConfig: object;
+
+  @ApiProperty({ required: false, description: '表单宽度' })
+  width: number;
 }
 
 // 表单模型 -分页查询参数
@@ -142,6 +148,9 @@ export class PatchFormSchemaListDto {
 
   @ApiProperty({ required: false, description: '备注' })
   remark: string;
+
+  @ApiProperty({ required: false, description: '表单宽度' })
+  width: number;
 }
 
 // 表单模型 -修改表单模型配置参数
@@ -157,4 +166,7 @@ export class PatchFormSchemaConfigDto {
 
   @ApiProperty({ required: false, description: '数据模型' })
   dataSchema: string;
+
+  @ApiProperty({ required: false, description: '其他配置（JSON）' })
+  otherConfig: object;
 }

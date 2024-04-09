@@ -49,6 +49,7 @@ export class SchemasService {
         'form.formEngineType',
         'form.formUrl',
         'form.remark',
+        'form.width',
         'form.create_at',
         'form.update_at',
       ])

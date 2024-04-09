@@ -28,7 +28,7 @@ export class SchemasController {
   /**
    ** @表单模型
    **************************************************************/
-  @ApiOperation({ summary: '保存表单模型（添加或删除）' })
+  @ApiOperation({ summary: '保存表单模型（添加或修改）' })
   @Roles('admin', 'admin-app')
   @Post('/formSchema')
   saveFormSchema(@Body() body: FormSchemaInfoDto) {
@@ -58,7 +58,7 @@ export class SchemasController {
     return this.schemasService.deleteFormSchema(param.id);
   }
 
-  @ApiOperation({ summary: '修改表单模型列表数据' })
+  @ApiOperation({ summary: '修改表单模型列表数据-分页列表' })
   @Roles('admin', 'admin-app')
   @Patch('/formSchema/list/:id')
   patchFormSchemaList(@Param() param: FormSchemaIdDto, @Body() body: PatchFormSchemaListDto) {
@@ -82,7 +82,7 @@ export class SchemasController {
   /**
    ** @动态列表模型
    **************************************************************/
-  @ApiOperation({ summary: '保存动态列表模型（添加或删除）' })
+  @ApiOperation({ summary: '保存动态列表模型（添加或修改）' })
   @Roles('admin', 'admin-app')
   @Post('/listSchema')
   saveListSchema(@Body() body: ListSchemaInfoDto) {
