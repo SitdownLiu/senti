@@ -53,7 +53,10 @@ export class SchemasService {
         'form.create_at',
         'form.update_at',
       ])
-      .orderBy('create_at', 'DESC');
+      .orderBy({
+        name: 'ASC',
+        create_at: 'DESC',
+      });
 
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });
@@ -107,6 +110,8 @@ export class SchemasService {
     try {
       let ret = await this.formSchema.findOne({ where: { id } });
       delete ret.id;
+      delete ret.createAt;
+      delete ret.updateAt;
       ret.name = ret.name + ' - 副本';
       return this.formSchema.save(ret);
     } catch (error) {
@@ -151,7 +156,10 @@ export class SchemasService {
         'list.create_at',
         'list.update_at',
       ])
-      .orderBy('create_at', 'DESC');
+      .orderBy({
+        name: 'ASC',
+        create_at: 'DESC',
+      });
 
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });
@@ -204,6 +212,8 @@ export class SchemasService {
     try {
       let ret = await this.listSchema.findOne({ where: { id } });
       delete ret.id;
+      delete ret.createAt;
+      delete ret.updateAt;
       ret.name = ret.name + ' - 副本';
       return this.listSchema.save(ret);
     } catch (error) {
