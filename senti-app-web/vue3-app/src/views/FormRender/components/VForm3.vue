@@ -41,6 +41,7 @@ const getFormData = () => {
 
 // 进入预览模式
 const previewMode = () => {
+  render.value.disableForm();
   render.value.setReadMode(true);
 };
 
