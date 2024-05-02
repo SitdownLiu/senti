@@ -35,7 +35,7 @@ export class SchemasService {
 
   // 分页查询表单模型
   async pageFormSchema(query): Promise<any> {
-    const { pageIndex, pageSize, name, type, formEngineType } = query;
+    const { pageIndex, pageSize, id, name, type, formEngineType } = query;
     const take = pageSize || 10,
       skip = (pageIndex - 1) * take || 0;
 
@@ -58,6 +58,7 @@ export class SchemasService {
         create_at: 'DESC',
       });
 
+    if (id) qb.where({ id });
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });
     if (formEngineType) qb.andWhere({ formEngineType });
@@ -140,7 +141,7 @@ export class SchemasService {
 
   // 分页查询动态列表模型
   async pageListSchema(query): Promise<any> {
-    const { pageIndex, pageSize, name, type } = query;
+    const { pageIndex, pageSize, id, name, type } = query;
     const take = pageSize || 10,
       skip = (pageIndex - 1) * take || 0;
 
@@ -161,6 +162,7 @@ export class SchemasService {
         create_at: 'DESC',
       });
 
+    if (id) qb.where({ id });
     if (name) qb.where({ name: Like(`%${name}%`) });
     if (type) qb.andWhere({ type });
     if (pageIndex || pageSize) {

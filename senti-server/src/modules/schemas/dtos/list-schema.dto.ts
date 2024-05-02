@@ -61,6 +61,9 @@ export class ListSchemaInfoDto {
 
 // 动态模型 -分页查询参数
 export class PageListSchemaDto extends PageDto {
+  @ApiProperty({ required: false, description: '动态列表模型id' })
+  id?: string;
+
   @ApiProperty({ required: false, description: '动态列表名称' })
   name?: string;
 

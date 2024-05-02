@@ -76,6 +76,9 @@ export class FormSchemaInfoDto {
 
 // 表单模型 -分页查询参数
 export class PageFormSchemaDto extends PageDto {
+  @ApiProperty({ required: false, description: '表单模型id' })
+  id?: string;
+
   @ApiProperty({ required: false, description: '表单名称' })
   name?: string;
 
